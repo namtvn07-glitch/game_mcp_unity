@@ -30,6 +30,7 @@ graph TD
     B -- Netcode, Multiplayer, Servers --> I[**REQUIRED BACKGROUND:** Read file sub-skill/unity-networking.md]
     B -- Profiling, Diagnostics, Target FPS --> J[**REQUIRED BACKGROUND:** Read file sub-skill/unity-profiling.md]
     B -- AudioMixer, 3D Spatial Audio --> K[**REQUIRED BACKGROUND:** Read file sub-skill/unity-audio.md]
+    B -- Editor Interaction, Scene Hierarchy, PlayMode, MCP --> L[**REQUIRED BACKGROUND:** Read file sub-skill/unity-mcp-interaction.md]
 ```
 
 ## Common Rationalizations

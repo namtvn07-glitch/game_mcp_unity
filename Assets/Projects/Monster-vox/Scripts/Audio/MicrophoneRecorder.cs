@@ -46,6 +46,9 @@ namespace MonsterVox.Audio
         {
             if (string.IsNullOrEmpty(activeMicrophoneDevice)) return;
 
+            // Pause all audio playback (and dspTime) while recording
+            AudioListener.pause = true;
+
             // Clear previous raw clip from RAM
             CleanupRawClip();
 
@@ -64,6 +67,9 @@ namespace MonsterVox.Audio
         public void StopRecording()
         {
             if (string.IsNullOrEmpty(activeMicrophoneDevice) || !Microphone.IsRecording(activeMicrophoneDevice)) return;
+
+            // Resume audio playback and dspTime
+            AudioListener.pause = false;
 
             // Calculate actual hit time
             int position = Microphone.GetPosition(activeMicrophoneDevice);

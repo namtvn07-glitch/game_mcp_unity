@@ -12,6 +12,7 @@ namespace MonsterVox.Audio
         public static AudioSourcePool Instance { get; private set; }
 
         [SerializeField] private int initialSize = 5;
+        [SerializeField] private UnityEngine.Audio.AudioMixerGroup mixerGroup;
         private Queue<AudioSource> availableSources = new Queue<AudioSource>();
 
         private void Awake()
@@ -39,6 +40,10 @@ namespace MonsterVox.Audio
             AudioSource source = obj.AddComponent<AudioSource>();
             source.spatialBlend = 0f; // Force 2D
             source.playOnAwake = false;
+            if (mixerGroup != null) 
+            {
+                source.outputAudioMixerGroup = mixerGroup;
+            }
             
             obj.SetActive(false);
             availableSources.Enqueue(source);
