@@ -1,35 +1,40 @@
 ---
 name: game-designer
-description: Master orchestrator skill for creating Game Design Documents (GDD). It reads sub-instructions to formulate Concept, Rules, and Event Matrix.
+description: Master orchestrator skill for creating Game Design Documents (GDD) via an autonomous 5-phase pipeline including document generation and UI wireframing.
 ---
 # Game Designer (Super Skill)
 
 You are the Master Orchestrator for the Game Design pipeline.
-To prevent context overflow and hallucination, you MUST NOT write the entire GDD from a single thought process. Instead, you will act as a system that processes three sequential phases.
+To prevent context overflow, ensure high-fidelity design output, and provide full department coverage, you MUST run this skill as an autonomous 5-phase sequential pipeline.
 
-## Execution Workflow (Super-Sub Skill Architecture)
+## Execution Workflow (Autonomous Pipeline Architecture)
 
-You must read the specific instructions for each phase from the local `subskills/` directory and execute them sequentially. Do not proceed to the next phase until the current one is completed.
+You must read the specific instructions for each phase from the local `subskills/` directory and execute them sequentially according to these explicit rules. 
 
-1. **Phase 1: Concept & Core Loop**
-   - **Action:** Read instructions from `subskills/1_concept.md`
-   - **Execution:** Take the user's raw idea and generate the `[CONCEPT]` and `[CORE_GAMEPLAY]` sections. Stop and review.
+**STRICT PIPELINE RULES:**
+- You MUST run Phase 1, then STOP and wait for human approval.
+- Once Phase 1 is approved, you MUST automatically chain Phase 2, Phase 3, Phase 4, and Phase 5 one after the other in continuous autonomous execution. Do not stop until Phase 5 is finished.
 
-2. **Phase 2: Rules Mapping**
-   - **Action:** Read instructions from `subskills/2_rules.md`
-   - **Execution:** Use ONLY the output of Phase 1 to generate the rigorous `[GAME_RULES]` section. Stop and review.
+---
 
-3. **Phase 3: Event Matrix & Checklists**
-   - **Action:** Read instructions from `subskills/3_matrix.md`
-   - **Execution:** Use the Rules from Phase 2 to map out the `[EVENT_MATRIX]`, `[UI_ARCHITECTURE]`, and `[ASSET_AGGREGATION_CHECKLIST]`. Stop and review.
+### 1. Phase 1: GDD Master Generation (HUMAN GATE)
+- **Action:** Read instructions from `subskills/1_gdd_core.md`.
+- **Execution:** Take the user's raw idea and generate the `[ProjectName]_Master_GDD.md`.
+- **Important:** **STOP AND HALT EXECUTION.** You must ask the user: "Do you approve this Master GDD?" Do not proceed to Phase 2 until they say yes.
 
-4. **Phase 4: QA Validation & Juice Injection**
-   - **Action:** Read instructions from `subskills/4_qa_validator.md`
-   - **Execution:** Critically evaluate the outputs of Phases 1-3. Resolve UI dead-ends and inject necessary game feel/juice. Update the matrices and lists accordingly.
+### 2. Phase 2: Department Breakout (AUTONOMOUS)
+- **Action:** Read instructions from `subskills/2_department_breakout.md`.
+- **Execution:** Parse the approved Master GDD and automatically write 4 separate markdown files for Art, Dev, AudioVFX, and UI.
 
-## Final Output Compilation & Export
-Once Phase 4 is complete, you MUST perform a self-reflection verification loop: visually cross-reference the required feedback items in `[EVENT_MATRIX]` and `[UI_ARCHITECTURE]` against the `[ASSET_AGGREGATION_CHECKLIST]`. If there are missing references, add them to the checklist.
-Once verified, combine the final blocks sequentially into the final Markdown GDD file. Do not remove any Asset IDs.
-**CRITICAL EXPORT STEP 1:** You MUST use the `write_to_file` tool to save this final GDD document directly into the exact same folder within the workspace where the user's raw idea originated, naming it `[ProjectName]_GDD.md` (e.g., `Assets/Projects/TRG32/Flappy_Trippy_GDD.md`). Do not just output the document in the chat.
-**CRITICAL EXPORT STEP 2:** You MUST parse the `[ASSET_AGGREGATION_CHECKLIST]` JSON block and export its arrays into separate physical files in that same project folder (e.g., `[ProjectName]_Art_Assets.json`, `[ProjectName]_Audio_Assets.json`, `[ProjectName]_VFX_Assets.json`, `[ProjectName]_UI_Assets.json`). Bypassing this step is a critical failure.
-**CRITICAL EXPORT STEP 3:** You MUST extract the `[UI_ARCHITECTURE]` section into a standalone file named `[ProjectName]_UI_Architecture.md` in the same project folder. This ensures the UI/UX team has a dedicated hierarchical reference.
+### 3. Phase 3: UI Wireframing (AUTONOMOUS)
+- **Action:** Read instructions from `subskills/3_ui_wireframing.md`.
+- **Execution:** Parse the UI Plan from Phase 2. Autonomously invoke the `generate_image` tool for every screen defined to create wireframe mockups.
+
+### 4. Phase 4: Cross-Validation & Auto-Correction (AUTONOMOUS)
+- **Action:** Read instructions from `subskills/4_cross_validation.md`.
+- **Execution:** Self-reflect on all 4 generated breakout files. Detect any missing assets or unlinked events between departments and automatically use file editing tools to add them.
+
+### 5. Phase 5: Integration Map (AUTONOMOUS)
+- **Action:** Read instructions from `subskills/5_integration_map.md`.
+- **Execution:** Synthesize the validated files into a final `[ProjectName]_Integration_Map.md` dictating the technical event hooks between Code, Art, UI, and Audio.
+- **Completion:** Once this is generated, announce that the pipeline has concluded successfully.
