@@ -7,16 +7,29 @@ Phase 2 must be complete. The file `[ProjectName]_UI_Plan.md` must exist.
 
 ## Action
 1. Read the `[ProjectName]_UI_Plan.md` file.
-2. Identify every distinct UI Screen or Popup listed in the document.
-3. For **each** screen, use the `generate_image` tool to render a wireframe mockup.
+2. Create a new file named `[ProjectName]_UX_Wireframes.md` in the project directory using the `write_to_file` tool.
+3. In this new file, you MUST generate an **ASCII Wireframe** for every distinct UI Screen or Popup listed in the UI Plan. Use Markdown code blocks to draw the layout (Top, Center, Bottom) with exact button names and placements.
+4. Below the ASCII wireframes, generate a **Mermaid UX Flowchart** (`graph TD`) mapping the navigation logic between all these screens.
 
-### Image Generation Prompt Rules
-When calling `generate_image`, use exactly this prompt structure tailored to the screen:
-`UI wireframe layout for a mobile game [ScreenName]. Professional UX design, monochrome grayscale wireframe style. Clearly visible [Element1], [Element2], [Element3]. No device frame. Minimalist and clear.`
-*(Replace bracketed variables with the actual screen name and required elements from the UI Plan)*
+### ASCII Wireframing Rules
+- Use structural ASCII art to represent the screen boundaries and elements.
+- Example:
+  ```text
+  +-----------------------+
+  | [Back]        [Coins] |
+  +-----------------------+
+  |                       |
+  |      [Monster]        |
+  |                       |
+  +-----------------------+
+  |    (HOLD TO RECORD)   |
+  +-----------------------+
+  ```
+- Ensure every button and text field defined in the UI Plan is present in your ASCII wireframe.
 
-### Image Naming
-Use clear snake_case names for the output: `ui_wireframe_[screen_name]`
+### UX Flowchart Rules
+- Use Mermaid syntax.
+- Link Screens to Popups and other Screens using clear action labels (e.g., `UI_MainMenu -->|Click Store| UI_Popup_Store`).
 
 ---
-**CRITICAL:** Ensure that you dispatch tool calls for all screens. Do not wait for human approval. After all images are generated, proceed immediately to Phase 4.
+**CRITICAL:** Ensure that you complete the `[ProjectName]_UX_Wireframes.md` file fully. Do not wait for human approval. After the file is generated, proceed immediately to Phase 4.

@@ -24,15 +24,15 @@ You must read the specific instructions for each phase from the local `subskills
 
 ### 2. Phase 2: Department Breakout (AUTONOMOUS)
 - **Action:** Read instructions from `subskills/2_department_breakout.md`.
-- **Execution:** Parse the approved Master GDD and automatically write 4 separate markdown files for Art, Dev, AudioVFX, and UI.
+- **Execution:** Parse the approved Master GDD and automatically write 5 separate markdown files for Art, Dev, AudioVFX, UI, and Game Data.
 
-### 3. Phase 3: UI Wireframing (AUTONOMOUS)
+### 3. Phase 3: UI Wireframing & UX Flow (AUTONOMOUS)
 - **Action:** Read instructions from `subskills/3_ui_wireframing.md`.
-- **Execution:** Parse the UI Plan from Phase 2. Autonomously invoke the `generate_image` tool for every screen defined to create wireframe mockups.
+- **Execution:** Parse the UI Plan from Phase 2. Autonomously generate ASCII layout wireframes and Mermaid UX flowchart diagrams in a new markdown file.
 
 ### 4. Phase 4: Cross-Validation & Auto-Correction (AUTONOMOUS)
 - **Action:** Read instructions from `subskills/4_cross_validation.md`.
-- **Execution:** Self-reflect on all 4 generated breakout files. Detect any missing assets or unlinked events between departments and automatically use file editing tools to add them.
+- **Execution:** Self-reflect on all 5 generated breakout files. Detect any missing assets or unlinked events between departments and automatically use file editing tools to add them.
 
 ### 5. Phase 5: Integration Map (AUTONOMOUS)
 - **Action:** Read instructions from `subskills/5_integration_map.md`.

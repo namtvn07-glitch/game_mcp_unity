@@ -33,6 +33,11 @@ List all primary features required for the MVP prototype.
 - **Orientation:**
 - **Target Performance:** (e.g., 60fps, low memory footprint)
 
+### 5. [ECONOMY & GAME DATA]
+- **Currencies:** Define Hard and Soft currencies if applicable.
+- **Sources & Sinks:** How are currencies generated and spent?
+- **Core Entities Quantity:** Define the initial scope (e.g., Number of Themes, Number of Monsters, Number of Slots/Levels).
+
 ---
 **CRITICAL:** Once the file is created via `write_to_file`, present the GDD to the user and say: "Please review the Master GDD. Do you approve this design so we can proceed to Breakout and Asset Generation?" 
 DO NOT proceed to Phase 2 until they say "yes" or "approve".
