@@ -1,0 +1,24 @@
+# Monster-vox UI Generation Tasks
+
+- [ ] Batch 1: Core UI Components
+    - [x] `UI_Panel_Base`: Bảng nền chính (Dark stone/wood, neon borders)
+    - [x] `UI_Btn_Large`: Nút chữ nhật lớn (Play, Buy, IAP)
+    - [x] `UI_Btn_Round`: Nút tròn nhỏ (Settings, Close, Back)
+- [ ] Batch 2: Gameplay UI Elements
+    - [x] `UI_Btn_Record`: Nút thu âm khổng lồ (Neon Red/Pink glow)
+    - [x] `UI_Slider_Track`: Thanh ray trượt
+    - [x] `UI_Slider_Handle`: Nút gạt thanh trượt
+- [ ] Batch 3: Icons & Items
+    - [x] `UI_Icon_Coin`: Spooky Coin
+    - [x] `UI_Icon_Lock`: Ổ khóa ma quái
+    - [x] `UI_Item_SoundBubble`: Bong bóng âm thanh (Glowing orb)
+- [ ] Batch 4: Missing System Icons
+    - [x] `UI_Icon_Back`: Mũi tên quay lại
+    - [x] `UI_Icon_Settings`: Bánh răng cài đặt
+    - [x] `UI_Icon_Close`: Dấu X đóng popup
+    - [x] `UI_Icon_Store`: Icon cửa hàng
+    - [x] `UI_Icon_ScreenRecord`: Icon máy quay phim
+- [ ] Batch 5: Final UI Enhancements
+    - [x] `UI_Icon_Collection`: Icon bộ sưu tập quái vật
+    - [x] `UI_Icon_Ad`: Icon xem quảng cáo
+    - [x] `UI_HUD_Pill`: Nền hiển thị số xu

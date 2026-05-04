@@ -14,6 +14,14 @@ Status: MANDATORY.
 **SUPREME DIRECTIVE**: Every Unity design, programming, testing, or refactoring process must 100% adhere to the **DevArchitechture** system's rules (strictly following Simplicity First, Surgical Changes). If you fail to comply, your code will be rejected. You must combine it with the Sub-Skills below.
 When you receive a request related to creating Unity features, the first step is to identify the task's Category and load the corresponding **REQUIRED BACKGROUND**.
 
+## Mandatory Planning Phase
+
+**IMMEDIATE ACTION REQUIRED upon receiving any new task, documentation, or project information:**
+1. **Comprehensive Analysis:** Deeply analyze the provided requirements, Game Design Documents (GDD), or technical specifications.
+2. **Detailed Task Breakdown:** Automatically generate a highly detailed, step-by-step implementation plan for building the game or feature in Unity. Break down the entire scope into specific, sequential jobs and individual tasks.
+3. **Task Document Creation:** Write a detailed `.md` file (e.g., `[ProjectName]_Development_Plan.md`) saving the step-by-step workflow. This document must serve as the master checklist containing the exact sequence of actions to be executed later.
+4. **Hold for Execution:** Do not begin coding immediately. Present the plan to the user and wait for confirmation to proceed step-by-step according to the `.md` file.
+
 ## Sub-Skills Routing
 
 Scan the user's request, match it with the flowchart below, and you MUST READ THE FILE to load the data:

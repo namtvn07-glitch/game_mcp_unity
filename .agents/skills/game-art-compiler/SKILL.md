@@ -16,14 +16,16 @@ This skill acts as a robust Data Ingestion Pipeline for your game artist workflo
 - Verify the directory exists via `list_dir`.
 - **LEGACY CLEANUP**: If a file named `DNA_Profile.md` exists in this folder, you MUST delete it. It is a deprecated V1 format. Do NOT leave it behind, as it will pollute the system.
 
-### 2. VLM Semantic Tagging (RAG-Optimized)
+### 2. VLM Semantic Tagging (RAG-Optimized & Dynamic Context)
 - Process all valid image files (`.png`, `.jpg`, `.jpeg`) inside the folder.
 - Execute a VLM check (e.g. via Gemini/Flash) for EACH image.
-- Ask the VLM to produce a highly dense, searchable string (Embedding-Ready) instead of loose sentences. It must explicitly extract:
-  1. **Shape Language** (e.g. rounded, sharp)
-  2. **Material** (e.g. metallic, plastic, flat-color)
-  3. **Complexity Level** / Rarity (e.g. basic, highly detailed)
-  4. **Color Palette** (e.g. neon green, high contrast)
+- **Pass 1: Asset Categorization:** The VLM must classify the image into one of: `[Character]`, `[Environment]`, `[Prop/Interactable]`, or `[UI]`.
+- **Pass 2: Contextual Extraction & Visual DNA:** Ask the VLM to produce a highly dense, searchable string (Embedding-Ready). It must explicitly extract:
+  1. **Visual DNA:** Shape Language, Material, Complexity Level / Rarity, and Color Palette.
+  2. **Game Design Principles (Based on Category):**
+     - `[Character]`: Silhouette Readability, Body Alignment, Proportion Rhythms.
+     - `[Environment]`: Guiding Lines, Depth Contrast (Foreground vs. Background), Scale perception.
+     - `[Prop/Interactable]`: Affordance (e.g., sharp/red = danger, round/bright = collectible).
 - Also generate a **RAG Hook Tag** (e.g. `"tag: UI_Icon, material: metallic, rarity: epic, visibility: high_contrast"`).
 - Keep a JSON array in memory or disk containing: `[{"filename":"...", "semantic_metadata":"..."}]`
 
@@ -36,10 +38,11 @@ This skill acts as a robust Data Ingestion Pipeline for your game artist workflo
 - Collect the macro conclusions from analyzing the full image batch and separate them into two strict files optimized for RAG retrieval and Semantic Search:
   
   **A. `Generation_DNA.md`**
-  Write this file using `write_to_file` into the style directory. It must use strict nested Markdown headings (for text-splitters) containing the following three pillars:
+  Write this file using `write_to_file` into the style directory. It must use strict nested Markdown headings (for text-splitters) containing the following FOUR pillars:
   - **`# I. VISUAL DNA`**: Consistency rules, Shape Language, Color Script (Rarity), and Material Polish.
   - **`# II. PRODUCT LOGIC`**: Readability (3-Second Rule), Progression Logic (Level upgrades), The Juice (Animation states), and UI Interaction rules (if applicable).
   - **`# III. TECHNICAL EXCELLENCE`**: Mesh / Topology rules, Texel Density, Modular design / Recolor limits.
+  - **`# IV. GAMEPLAY AFFORDANCE & DESIGN LOGIC`**: Synthesized rules from the dynamic context extraction (e.g., silhouette rules, guiding lines, affordance logic).
   Include positive anchors and strict negative safeguards under these headings.
   
   **B. `Evaluation_Rules.json`**
@@ -53,7 +56,8 @@ This skill acts as a robust Data Ingestion Pipeline for your game artist workflo
     "evaluation_criteria": {
       "visual_dna": ["Are shapes consistent?", "Does it match standard rarity palettes?"],
       "product_logic": ["Does it pass the 3-second readability rule?"],
-      "technical_excellence": ["Are details readable at thumbnail size?"]
+      "technical_excellence": ["Are details readable at thumbnail size?"],
+      "gameplay_affordance": ["Does the shape communicate its gameplay function?", "Is it distinct from the background (Visual Hierarchy)?"]
     },
     "forbidden_elements": ["List of anti-patterns"]
   }
