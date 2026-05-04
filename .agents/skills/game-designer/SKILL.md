@@ -1,11 +1,11 @@
 ---
 name: game-designer
-description: Master orchestrator skill for creating Game Design Documents (GDD) via an autonomous 5-phase pipeline including document generation and UI wireframing.
+description: Master orchestrator skill for creating Game Design Documents (GDD) via an autonomous 6-phase pipeline including document generation and UI wireframing.
 ---
 # Game Designer (Super Skill)
 
 You are the Master Orchestrator for the Game Design pipeline.
-To prevent context overflow, ensure high-fidelity design output, and provide full department coverage, you MUST run this skill as an autonomous 5-phase sequential pipeline.
+To prevent context overflow, ensure high-fidelity design output, and provide full department coverage, you MUST run this skill as an autonomous 6-phase sequential pipeline.
 
 ## Execution Workflow (Autonomous Pipeline Architecture)
 
@@ -13,7 +13,7 @@ You must read the specific instructions for each phase from the local `subskills
 
 **STRICT PIPELINE RULES:**
 - You MUST run Phase 1, then STOP and wait for human approval.
-- Once Phase 1 is approved, you MUST automatically chain Phase 2, Phase 3, Phase 4, and Phase 5 one after the other in continuous autonomous execution. Do not stop until Phase 5 is finished.
+- Once Phase 1 is approved, you MUST automatically chain Phase 2, Phase 3, Phase 4, Phase 5, and Phase 6 one after the other in continuous autonomous execution. Do not stop until Phase 6 is finished.
 
 ---
 
@@ -37,4 +37,8 @@ You must read the specific instructions for each phase from the local `subskills
 ### 5. Phase 5: Integration Map (AUTONOMOUS)
 - **Action:** Read instructions from `subskills/5_integration_map.md`.
 - **Execution:** Synthesize the validated files into a final `[ProjectName]_Integration_Map.md` dictating the technical event hooks between Code, Art, UI, and Audio.
+
+### 6. Phase 6: Project Hub & Technical Spec (AUTONOMOUS)
+- **Action:** Read instructions from `subskills/6_project_synthesis.md`.
+- **Execution:** Create `[ProjectName]_Project_Hub.md` and `technical-spec.md`. The Hub acts as the central coordinator and directory for all departments, while the Technical Spec details the architecture, systems, and logic for the dev team.
 - **Completion:** Once this is generated, announce that the pipeline has concluded successfully.

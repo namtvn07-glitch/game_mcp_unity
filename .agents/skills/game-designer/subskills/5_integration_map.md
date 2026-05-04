@@ -26,4 +26,4 @@ Create a breakdown linking Action -> Code -> VFX -> SFX -> UI.
 Provide a high-level representation of what the main Unity Scene hierarchy should look like to accommodate these systems (e.g., `Managers`, `UI_Canvas`, `Environment`, `Player`).
 
 ---
-**CRITICAL:** Once the Integration Map is written, your pipeline execution is complete. Inform the user that the Game Designer autonomous pipeline has finished successfully.
+**CRITICAL:** Once the Integration Map is written, you MUST automatically proceed to Phase 6: Project Hub & Technical Spec.

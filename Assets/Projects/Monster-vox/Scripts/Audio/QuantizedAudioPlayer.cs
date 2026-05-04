@@ -15,7 +15,7 @@ namespace MonsterVox.Audio
         private bool isPlaying = false;
         private const double SCHEDULE_THRESHOLD = 0.1d; // 100ms look-ahead
 
-        public void ReceiveNewClip(AudioClip newClip)
+        public void ReceiveNewClip(AudioClip newClip, UnityEngine.Audio.AudioMixerGroup mixerGroup = null)
         {
             if (newClip == null) return;
             
@@ -28,8 +28,20 @@ namespace MonsterVox.Audio
             assignedClip = newClip;
             mySource = AudioSourcePool.Instance.GetSource();
             mySource.clip = assignedClip;
+            if (mixerGroup != null)
+            {
+                mySource.outputAudioMixerGroup = mixerGroup;
+            }
             
             CalculateScheduling();
+        }
+
+        public void GetSpectrumData(float[] samples)
+        {
+            if (mySource != null && isPlaying)
+            {
+                mySource.GetSpectrumData(samples, 0, FFTWindow.BlackmanHarris);
+            }
         }
 
         private void CalculateScheduling()
@@ -57,6 +69,8 @@ namespace MonsterVox.Audio
             isPlaying = true;
         }
 
+        public event System.Action OnLoopCycleCompleted;
+
         private void Update()
         {
             // Do not generate strings or instantiate items here.
@@ -73,6 +87,7 @@ namespace MonsterVox.Audio
                 
                 mySource.PlayScheduled(nextEventTime);
                 mySource.SetScheduledEndTime(nextEventTime + assignedClip.length);
+                OnLoopCycleCompleted?.Invoke();
             }
         }
 
