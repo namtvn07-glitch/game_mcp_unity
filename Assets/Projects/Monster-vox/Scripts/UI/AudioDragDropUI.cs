@@ -33,7 +33,7 @@ namespace MonsterVox.UI
         public void OnDrag(PointerEventData eventData)
         {
             // Basic screen follow
-            rectTransform.position = Input.mousePosition; 
+            rectTransform.position = eventData.position; 
         }
 
         public void OnEndDrag(PointerEventData eventData)
@@ -41,46 +41,47 @@ namespace MonsterVox.UI
             canvasGroup.blocksRaycasts = true;
             canvasGroup.alpha = 1f;
 
-            // Simple raycast check from Camera 
             if (Camera.main != null)
             {
-                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                // Try Physics 2D first
-                RaycastHit2D hit2D = Physics2D.Raycast(ray.origin, ray.direction);
-                
-                if (hit2D.collider != null)
+                // For orthographic camera: convert screen pos to world XY, then point-cast
+                // ScreenPointToRay produces Z=-10 ray parallel to monsters at Z=0, which misses.
+                Vector3 worldPos = Camera.main.ScreenToWorldPoint(
+                    new Vector3(eventData.position.x, eventData.position.y, Camera.main.nearClipPlane));
+
+                Collider2D hitCollider = Physics2D.OverlapPoint(new Vector2(worldPos.x, worldPos.y));
+
+                if (hitCollider != null)
                 {
-                    TryAssignToMonster(hit2D.collider.gameObject);
+                    TryAssignToMonster(hitCollider.gameObject);
                     return;
-                }
-                else
-                {
-                    // Fallback to Physics 3D
-                    if (Physics.Raycast(ray, out RaycastHit hit3D))
-                    {
-                        TryAssignToMonster(hit3D.collider.gameObject);
-                        return;
-                    }
                 }
             }
 
-            // Return if nothing hits
+            // Nothing hit — return bubble to original position
             rectTransform.anchoredPosition = originalPosition;
         }
 
         private void TryAssignToMonster(GameObject targetGo)
         {
+            // Prefer MonsterController (new system) over raw QuantizedAudioPlayer
+            var controller = targetGo.GetComponent<MonsterVox.Gameplay.MonsterController>();
+            if (controller != null && VoiceClip != null)
+            {
+                controller.ReceiveClip(VoiceClip);
+                Destroy(gameObject);
+                return;
+            }
+
+            // Fallback: direct QuantizedAudioPlayer (legacy Monster_Vocalist prefab)
             var player = targetGo.GetComponent<MonsterVox.Audio.QuantizedAudioPlayer>();
             if (player != null && VoiceClip != null)
             {
                 player.ReceiveNewClip(VoiceClip);
-                // Dispose UI clip icon after successfully assigned
                 Destroy(gameObject);
+                return;
             }
-            else
-            {
-                rectTransform.anchoredPosition = originalPosition;
-            }
+
+            rectTransform.anchoredPosition = originalPosition;
         }
     }
 }

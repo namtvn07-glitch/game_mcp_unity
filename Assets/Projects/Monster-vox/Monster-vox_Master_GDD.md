@@ -24,8 +24,7 @@ Danh sách tính năng cho MVP Prototype:
 - **Hệ thống Thu âm & Xử lý Âm thanh:** Ghi âm microphone (<2s) và thuật toán Auto-Quantize (ép nhịp BPM), kết hợp Voice Filters (Pitch-up, trầm, xoắn giọng).
 - **Cơ chế Mixing (Kéo & Thả):** Hệ thống Drag & Drop gán âm thanh vào Monster Slots (Bắt đầu với 3 Slot mặc định).
 - **Hệ thống Kinh tế & Nâng cấp (Meta Progression):** Cơ chế sinh xu dựa trên chu kỳ phát nhạc hoàn chỉnh, dùng để mở khóa Theme, Monster và Slot biểu diễn.
-- **Hệ thống Chia sẻ Viral:** Nút In-game Screen Recording để xuất video.
-- **Hệ thống Kiếm tiền (Monetization):** Tích hợp Rewarded Ads (nhận xu, mở khóa nhanh VIP, thêm slot) và IAP (Premium Access, Coin Packs).
+- **Hệ thống Kiếm tiền (Monetization):** Tích hợp Rewarded Ads (nhận xu, mở khóa nhanh Theme, thêm slot). Không sử dụng IAP.
 
 ### 4. [TECHNICAL_CONSTRAINTS]
 - **Platform/Engine:** Mobile (iOS/Android) phát triển bằng Unity Engine.
@@ -34,11 +33,11 @@ Danh sách tính năng cho MVP Prototype:
 
 ### 5. [ECONOMY & GAME DATA]
 - **Currencies:** 
-  - **Soft Currency:** Spooky Coin (Tiền vàng) - Đơn vị tiền tệ chính trong game.
-  - **Hard Currency:** Không sử dụng Hard Currency trong MVP, người chơi nạp tiền thật (IAP) sẽ quy đổi trực tiếp ra Spooky Coin hoặc mua Premium Access.
+  - **Soft Currency:** Spooky Coin (Tiền vàng) - Đơn vị tiền tệ duy nhất trong game.
+  - **Hard Currency:** Không sử dụng.
 - **Sources & Sinks:**
-  - **Sources (Nguồn sinh):** Rớt tự động từ quái vật (ví dụ: mỗi khi bản nhạc chạy hoàn thành 1 chu kỳ loop), xem quảng cáo Rewarded Ads để nhận lượng lớn xu, Mua gói xu qua IAP.
-  - **Sinks (Nguồn tiêu):** Tiêu xu (hoặc xem Ads) để mở khóa Theme mới (bài hát & bối cảnh mới), mở khóa Monster mới (ngoại hình & bộ lọc giọng hát mới), mở rộng Slot biểu diễn (tăng từ 3 lên tối đa 5 slot trên sân khấu).
+  - **Sources (Nguồn sinh):** Rớt tự động từ quái vật (NẾU quái vật ĐANG HÁT khi bản nhạc hoàn thành 1 chu kỳ loop), xem quảng cáo Rewarded Ads để nhận lượng lớn xu.
+  - **Sinks (Nguồn tiêu):** Tiêu xu (hoặc xem Ads) để mở khóa Theme mới (bài hát & bối cảnh mới), mở khóa Monster mới (ngoại hình & bộ lọc giọng hát mới), mở rộng Slot biểu diễn (tăng từ 3 lên tối đa 5 slot trên sân khấu, có hiệu lực trên toàn bộ Theme).
 - **Core Entities Quantity:**
   - **Themes:** 10 Themes đa dạng bối cảnh.
   - **Monsters:** 20 loại quái vật với 20 bộ Voice Filters độc đáo.

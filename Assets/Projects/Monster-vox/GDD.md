@@ -15,7 +15,6 @@
 * **UGC "Siêu Lười" (Effortless User-Generated Content):** Chỉ cần một tiếng hắt xì, một tiếng chó sủa hay một câu nói đùa thu vào micro, game sẽ biến nó thành giai điệu hoàn chỉnh. 
 * **Phép Màu Auto-Quantize:** Thuật toán tự động cắt, kéo giãn và ép mọi âm thanh rác vào đúng nhịp (BPM) của bài nhạc nền mà không cần người chơi có kiến thức nhạc lý.
 * **Môi trường Đa dạng (Themed Stages):** Mỗi màn chơi (Theme) mang một phong cách đồ hoạ và bài nhạc nền (BGM) hoàn toàn khác biệt, kích thích sự tò mò khám phá.
-* **Được Thiết Kế Để Viral:** Game tích hợp sẵn nút quay màn hình (Screen Recording) để người chơi tự động chia sẻ những bản mix ngớ ngẩn lên TikTok/Shorts.
 
 ## 3. VÒNG LẶP CỐT LÕI (CORE GAMEPLAY LOOP)
 Vòng lặp game được thiết kế theo hướng **Casual tinh gọn**, tập trung vào trải nghiệm tức thì:
@@ -52,11 +51,8 @@ Vòng lặp game được thiết kế theo hướng **Casual tinh gọn**, tậ
   * "Xem video để Mở Khoá Nhanh Theme VIP (chơi thử 1 lần)."
   * "Xem video để nhận ngay 1000 Xu để mở khoá Quái Vật Mới."
   * "Xem video để thêm 1 Slot xịn cho trận mix hiện tại."
-* **In-App Purchases (IAP):**
-  * Gói "Premium Access": Xóa bỏ quảng cáo xen ngang, mở khoá mọi Theme.
-  * Mua Trực tiếp Xu (Coin Packs).
 
 ## 7. TẦM NHÌN DÀI HẠN (ROADMAP)
 * **Giai đoạn 1 (MVP/Prototype):** Có 1 màn hình Home giao diện đơn giản, 1 Theme mặc định (Nhạc nền sẵn), tính năng Thu âm + Kéo thả + 3 Slot mặc định để đo lường độ mượt và "sự vui nhộn".
 * **Giai đoạn 2 (Meta Game Build):** Thêm cơ chế Earn Coin (Tiền rớt khi nhạc đang chạy), cửa hàng Mở khoá Theme & Slot biểu diễn. Bổ sung các Theme 2, Theme 3.
-* **Giai đoạn 3 (Soft Launch & Marketing):** Tích hợp nút Record Screen In-game chuẩn, tối ưu build size và test CPI (Chi phí thu hút cài đặt) trên TikTok thông qua video review gameplay siêu bựa.
+* **Giai đoạn 3 (Soft Launch & Marketing):** Tối ưu build size và test CPI (Chi phí thu hút cài đặt) trên TikTok thông qua video review gameplay.

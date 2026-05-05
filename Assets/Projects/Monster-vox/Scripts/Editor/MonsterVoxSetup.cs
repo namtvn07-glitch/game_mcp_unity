@@ -3,25 +3,26 @@ using UnityEditor;
 using MonsterVox.Data;
 using MonsterVox.Audio;
 using MonsterVox.UI;
+using MonsterVox.Managers;
+using MonsterVox.Gameplay;
 using UnityEngine.UI;
 using UnityEditor.SceneManagement;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
+
 namespace MonsterVox.Editor
 {
     public class MonsterVoxSetup
     {
-        [MenuItem("MonsterVox/Setup Base Assets")]
-        public static void SetupAssets()
+        private static string rootPath = "Assets/Projects/Monster-vox";
+
+        [MenuItem("MonsterVox/1. Setup Data Assets")]
+        public static void SetupDataAssets()
         {
-            string rootPath = "Assets/Projects/Monster-vox";
-            
-            // 1. Ensure Folders
-            if (!AssetDatabase.IsValidFolder(rootPath + "/Data")) AssetDatabase.CreateFolder(rootPath, "Data");
-            if (!AssetDatabase.IsValidFolder(rootPath + "/Prefabs")) AssetDatabase.CreateFolder(rootPath, "Prefabs");
-            
-            // 2. Create Config SO
-            string configPath = rootPath + "/Data/AudioConfig.asset";
+            EnsureFolders();
+
+            // AudioConfig
+            string configPath = $"{rootPath}/Data/AudioConfig.asset";
             AudioConfigSO config = AssetDatabase.LoadAssetAtPath<AudioConfigSO>(configPath);
             if (config == null)
             {
@@ -29,173 +30,431 @@ namespace MonsterVox.Editor
                 AssetDatabase.CreateAsset(config, configPath);
             }
 
-            // 3. Create MicrobiologyRecorder Prefab
-            CreatePrefab("MicrophoneRecorder", rootPath + "/Prefabs/MicrophoneRecorder.prefab", go =>
-            {
-                var rec = go.AddComponent<MicrophoneRecorder>();
-                var serializedObj = new SerializedObject(rec);
-                serializedObj.FindProperty("audioConfig").objectReferenceValue = config;
-                serializedObj.ApplyModifiedProperties();
-            });
+            // Themes
+            CreateThemeSO("Theme_01", "Spooky Room", 120f, 0, 0);
+            CreateThemeSO("Theme_02", "Neon Graveyard", 120f, 500, 2);
+            CreateThemeSO("Theme_03", "Alien Stage", 130f, 800, 3);
 
-            // 4. Create AudioSourcePool Prefab
-            CreatePrefab("AudioSourcePool", rootPath + "/Prefabs/AudioSourcePool.prefab", go =>
-            {
-                var pool = go.AddComponent<AudioSourcePool>();
-                var serializedObj = new SerializedObject(pool);
-                serializedObj.FindProperty("initialSize").intValue = 5;
-                serializedObj.ApplyModifiedProperties();
-            });
+            // Monsters
+            CreateMonsterSO("Mon_01", "Normal Cyclops", VoiceFilterType.Normal, 0, 0);
+            CreateMonsterSO("Mon_02", "Chipmunk Ghost", VoiceFilterType.PitchUp, 150, 1);
+            CreateMonsterSO("Mon_03", "Robo Bat", VoiceFilterType.Robot, 300, 1);
+            CreateMonsterSO("Mon_04", "Deep Blob", VoiceFilterType.PitchDown, 400, 2);
 
-            // 5. Create Monster Prefab (QuantizedAudioPlayer)
-            CreatePrefab("Monster_Vocalist", rootPath + "/Prefabs/Monster_Vocalist.prefab", go =>
-            {
-                var player = go.AddComponent<QuantizedAudioPlayer>();
-                var serializedObj = new SerializedObject(player);
-                serializedObj.FindProperty("audioConfig").objectReferenceValue = config;
-                serializedObj.ApplyModifiedProperties();
-
-                // Add 2D Collider for Raycast detection
-                go.AddComponent<BoxCollider2D>();
-            });
-
-            // 6. Create UI VoiceClip Prefab
-            CreatePrefab("VoiceClipUI", rootPath + "/Prefabs/VoiceClipUI.prefab", go =>
-            {
-                var rt = go.AddComponent<RectTransform>();
-                rt.sizeDelta = new Vector2(100, 100);
-                
-                // Visual
-                var img = go.AddComponent<Image>();
-                img.color = new Color(0.2f, 0.8f, 0.2f);
-                
-                // Logic
-                go.AddComponent<CanvasGroup>();
-                go.AddComponent<AudioDragDropUI>();
-            });
+            // Voice Clip Prefab
+            CreateVoiceClipPrefab();
 
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
-            Debug.Log("✅ Monster-vox Assets & Prefabs Base created successfully!");
+            Debug.Log("✅ Data Assets created (AudioConfig + 3 Themes + 4 Monsters + VoiceClipUI)");
         }
 
-        [MenuItem("MonsterVox/Create Demo Scene")]
-        public static void CreateDemoScene()
+        private static void CreateVoiceClipPrefab()
         {
-            string rootPath = "Assets/Projects/Monster-vox";
-            
-            // Validate dependencies
-            GameObject recorderPrefab = AssetDatabase.LoadAssetAtPath<GameObject>($"{rootPath}/Prefabs/MicrophoneRecorder.prefab");
-            GameObject poolPrefab = AssetDatabase.LoadAssetAtPath<GameObject>($"{rootPath}/Prefabs/AudioSourcePool.prefab");
-            GameObject monsterPrefab = AssetDatabase.LoadAssetAtPath<GameObject>($"{rootPath}/Prefabs/Monster_Vocalist.prefab");
-            GameObject voiceUI = AssetDatabase.LoadAssetAtPath<GameObject>($"{rootPath}/Prefabs/VoiceClipUI.prefab");
-            
-            if (recorderPrefab == null || poolPrefab == null || monsterPrefab == null || voiceUI == null)
+            string prefabDir = $"{rootPath}/Prefabs";
+            if (!AssetDatabase.IsValidFolder(prefabDir))
             {
-                Debug.LogError("Missing prefabs! Please run 'MonsterVox/Setup Base Assets' first.");
-                return;
+                string parentDir = prefabDir.Substring(0, prefabDir.LastIndexOf('/'));
+                string newFolder = prefabDir.Substring(prefabDir.LastIndexOf('/') + 1);
+                AssetDatabase.CreateFolder(parentDir, newFolder);
             }
 
-            // Create blank scene
-            Scene newScene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
+            string prefabPath = $"{prefabDir}/VoiceClipUI.prefab";
+            if (AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath) != null) return;
 
-            // Setup Camera
+            GameObject go = new GameObject("VoiceClipUI");
+            RectTransform rt = go.AddComponent<RectTransform>();
+            rt.sizeDelta = new Vector2(80f, 80f);
+            
+            Image img = go.AddComponent<Image>();
+            img.color = Color.cyan;
+            // In a real project, assign a circle sprite here
+
+            go.AddComponent<CanvasGroup>();
+            go.AddComponent<AudioDragDropUI>();
+
+            PrefabUtility.SaveAsPrefabAsset(go, prefabPath);
+            Object.DestroyImmediate(go);
+        }
+
+        [MenuItem("MonsterVox/2. Create Main Scene")]
+        public static void CreateMainScene()
+        {
+            // Load dependencies
+            AudioConfigSO config = AssetDatabase.LoadAssetAtPath<AudioConfigSO>($"{rootPath}/Data/AudioConfig.asset");
+            if (config == null) { Debug.LogError("Run 'Setup Data Assets' first!"); return; }
+
+            Scene scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
+
+            // ── Camera ──
             GameObject camGO = new GameObject("Main Camera");
             Camera cam = camGO.AddComponent<Camera>();
             cam.orthographic = true;
-            cam.orthographicSize = 5f;
+            cam.orthographicSize = 7f;
+            cam.backgroundColor = new Color(0.08f, 0.05f, 0.15f);
             camGO.AddComponent<AudioListener>();
             camGO.tag = "MainCamera";
             camGO.transform.position = new Vector3(0, 0, -10f);
 
-            // Setup Event System
-            GameObject eventSystemGO = new GameObject("EventSystem");
-            eventSystemGO.AddComponent<EventSystem>();
-            eventSystemGO.AddComponent<StandaloneInputModule>();
+            // ── EventSystem ──
+            GameObject evsGO = new GameObject("EventSystem");
+            evsGO.AddComponent<EventSystem>();
+            evsGO.AddComponent<StandaloneInputModule>();
 
-            // Instantiate Systems
-            GameObject poolInst = PrefabUtility.InstantiatePrefab(poolPrefab) as GameObject;
-            GameObject recorderInst = PrefabUtility.InstantiatePrefab(recorderPrefab) as GameObject;
+            // ── Core_Managers ──
+            GameObject managersRoot = new GameObject("Core_Managers");
 
-            // Setup Canvas
-            GameObject canvasGO = new GameObject("Canvas");
-            Canvas canvas = canvasGO.AddComponent<Canvas>();
-            canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-            canvasGO.AddComponent<CanvasScaler>();
-            canvasGO.AddComponent<GraphicRaycaster>();
+            GameObject gmGO = new GameObject("GameManager");
+            gmGO.transform.SetParent(managersRoot.transform);
+            gmGO.AddComponent<GameManager>();
 
-            // Setup Record Button
-            GameObject btnGO = new GameObject("RecordButton");
-            btnGO.transform.SetParent(canvasGO.transform, false);
-            RectTransform btnRT = btnGO.AddComponent<RectTransform>();
-            btnRT.anchorMin = new Vector2(0.5f, 0);
-            btnRT.anchorMax = new Vector2(0.5f, 0);
-            btnRT.pivot = new Vector2(0.5f, 0);
-            btnRT.anchoredPosition = new Vector2(0, 50);
-            btnRT.sizeDelta = new Vector2(200, 80);
-            
-            Image btnImg = btnGO.AddComponent<Image>();
-            btnImg.color = Color.red;
-            Button btn = btnGO.AddComponent<Button>();
+            GameObject emGO = new GameObject("EconomyManager");
+            emGO.transform.SetParent(managersRoot.transform);
+            emGO.AddComponent<EconomyManager>();
 
-            GameObject textGO = new GameObject("Text");
-            textGO.transform.SetParent(btnGO.transform, false);
-            Text txt = textGO.AddComponent<Text>();
-            txt.text = "HOLD TO RECORD";
-            txt.alignment = TextAnchor.MiddleCenter;
-            txt.color = Color.white;
-            txt.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
-            
-            RectTransform textRT = textGO.GetComponent<RectTransform>();
-            textRT.anchorMin = Vector2.zero;
-            textRT.anchorMax = Vector2.one;
-            textRT.sizeDelta = Vector2.zero;
+            GameObject catalogGO = new GameObject("GameDataCatalog");
+            catalogGO.transform.SetParent(managersRoot.transform);
+            var catalog = catalogGO.AddComponent<GameDataCatalog>();
+            // Wire catalog data via SerializedObject
+            WireCatalog(catalog);
 
-            // Setup DemoGameManager
-            GameObject managerGO = new GameObject("DemoGameManager");
-            DemoGameManager dm = managerGO.AddComponent<DemoGameManager>();
-            dm.microphoneRecorder = recorderInst.GetComponent<MicrophoneRecorder>();
-            dm.voiceClipUIPrefab = voiceUI;
-            dm.canvasTransform = canvasGO.transform;
+            // ── Audio ──
+            GameObject audioRoot = new GameObject("AudioSources");
+            GameObject bgmGO = new GameObject("Source_BGM");
+            bgmGO.transform.SetParent(audioRoot.transform);
+            AudioSource bgmSrc = bgmGO.AddComponent<AudioSource>();
+            bgmSrc.playOnAwake = false;
+            bgmSrc.loop = true;
 
-            // Hook EventTrigger for PointerDown/Up instead of standard Button clicked (since we need hold logic)
-            EventTrigger trigger = btnGO.AddComponent<EventTrigger>();
-            
-            EventTrigger.Entry pointerDown = new EventTrigger.Entry();
-            pointerDown.eventID = EventTriggerType.PointerDown;
-            pointerDown.callback.AddListener((data) => { dm.OnRecordPointerDown(); });
-            trigger.triggers.Add(pointerDown);
-
-            EventTrigger.Entry pointerUp = new EventTrigger.Entry();
-            pointerUp.eventID = EventTriggerType.PointerUp;
-            pointerUp.callback.AddListener((data) => { dm.OnRecordPointerUp(); });
-            trigger.triggers.Add(pointerUp);
-
-            // Instantiate 3 Monsters
-            for(int i = -1; i <= 1; i++)
+            // Assign BGM clip to Theme_01
+            AudioClip bgmClip = AssetDatabase.LoadAssetAtPath<AudioClip>($"{rootPath}/SFX/Monster_In_The_Playroom.mp3");
+            ThemeDataSO theme01 = AssetDatabase.LoadAssetAtPath<ThemeDataSO>($"{rootPath}/Data/Theme_01.asset");
+            if (bgmClip != null && theme01 != null)
             {
-                GameObject mInst = PrefabUtility.InstantiatePrefab(monsterPrefab) as GameObject;
-                mInst.transform.position = new Vector3(i * 3f, 1f, 0f);
+                var so = new SerializedObject(theme01);
+                so.FindProperty("bgmClip").objectReferenceValue = bgmClip;
+                so.ApplyModifiedProperties();
             }
 
-            // Save Scene
-            string scenePath = $"{rootPath}/DemoScene.unity";
-            EditorSceneManager.SaveScene(newScene, scenePath);
-            Debug.Log($"✅ Demo Scene created and saved to {scenePath}");
+            GameObject poolGO = new GameObject("AudioSourcePool");
+            poolGO.transform.SetParent(audioRoot.transform);
+            var pool = poolGO.AddComponent<AudioSourcePool>();
+            var poolSO = new SerializedObject(pool);
+            poolSO.FindProperty("initialSize").intValue = 5;
+            poolSO.ApplyModifiedProperties();
+
+            // ── Environment ──
+            GameObject envRoot = new GameObject("Environment_2D");
+            GameObject bgRend = new GameObject("Background");
+            bgRend.transform.SetParent(envRoot.transform);
+            bgRend.AddComponent<SpriteRenderer>().sortingOrder = -10;
+
+            // Floor collider for coins
+            GameObject floor = new GameObject("DropArea_Floor");
+            floor.transform.SetParent(envRoot.transform);
+            floor.transform.position = new Vector3(0, -5f, 0);
+            BoxCollider2D floorCol = floor.AddComponent<BoxCollider2D>();
+            floorCol.size = new Vector2(20f, 1f);
+
+            // CoinSpawner
+            GameObject coinSpawnerGO = new GameObject("CoinSpawner");
+            coinSpawnerGO.transform.SetParent(envRoot.transform);
+            var coinSpawner = coinSpawnerGO.AddComponent<CoinSpawner>();
+
+            // StageManager
+            GameObject stageGO = new GameObject("StageManager");
+            stageGO.transform.SetParent(envRoot.transform);
+            var stage = stageGO.AddComponent<StageManager>();
+            var stageSO = new SerializedObject(stage);
+            stageSO.FindProperty("bgmSource").objectReferenceValue = bgmSrc;
+            stageSO.FindProperty("backgroundRenderer").objectReferenceValue = bgRend.GetComponent<SpriteRenderer>();
+            stageSO.FindProperty("coinSpawner").objectReferenceValue = coinSpawner;
+            stageSO.FindProperty("audioConfig").objectReferenceValue = config;
+            stageSO.ApplyModifiedProperties();
+
+            // ── Entities ──
+            GameObject entitiesRoot = new GameObject("Entities");
+            GameObject recGO = new GameObject("MicrophoneRecorder");
+            recGO.transform.SetParent(entitiesRoot.transform);
+            var recorder = recGO.AddComponent<MicrophoneRecorder>();
+            var recSO = new SerializedObject(recorder);
+            recSO.FindProperty("audioConfig").objectReferenceValue = config;
+            recSO.ApplyModifiedProperties();
+
+            // ── UI Canvas ──
+            GameObject canvasGO = CreateCanvas("UI_Canvas");
+            
+            // -- Panel_MainMenu --
+            GameObject menuPanel = CreatePanel(canvasGO.transform, "Panel_MainMenu");
+            var uiMgr = canvasGO.AddComponent<UIManager>();
+
+            // Theme Name
+            GameObject themeNameGO = CreateText(menuPanel.transform, "ThemeName", "Spooky Room", 28, TextAnchor.MiddleCenter);
+            RectTransform tnRT = themeNameGO.GetComponent<RectTransform>();
+            tnRT.anchorMin = new Vector2(0.1f, 0.55f); tnRT.anchorMax = new Vector2(0.9f, 0.65f);
+            tnRT.offsetMin = Vector2.zero; tnRT.offsetMax = Vector2.zero;
+
+            // Theme Preview
+            GameObject previewGO = new GameObject("ThemePreview");
+            previewGO.transform.SetParent(menuPanel.transform, false);
+            Image previewImg = previewGO.AddComponent<Image>();
+            previewImg.color = new Color(0.3f, 0.1f, 0.4f);
+            RectTransform pvRT = previewGO.GetComponent<RectTransform>();
+            pvRT.anchorMin = new Vector2(0.15f, 0.35f); pvRT.anchorMax = new Vector2(0.85f, 0.55f);
+            pvRT.offsetMin = Vector2.zero; pvRT.offsetMax = Vector2.zero;
+
+            // Lock overlay
+            GameObject lockGO = CreateText(menuPanel.transform, "LockOverlay", "🔒", 40, TextAnchor.MiddleCenter);
+            RectTransform lkRT = lockGO.GetComponent<RectTransform>();
+            lkRT.anchorMin = new Vector2(0.15f, 0.35f); lkRT.anchorMax = new Vector2(0.85f, 0.55f);
+            lkRT.offsetMin = Vector2.zero; lkRT.offsetMax = Vector2.zero;
+
+            // Status text
+            GameObject statusGO = CreateText(menuPanel.transform, "ThemeStatus", "UNLOCKED", 18, TextAnchor.MiddleCenter);
+            RectTransform stRT = statusGO.GetComponent<RectTransform>();
+            stRT.anchorMin = new Vector2(0.2f, 0.30f); stRT.anchorMax = new Vector2(0.8f, 0.35f);
+            stRT.offsetMin = Vector2.zero; stRT.offsetMax = Vector2.zero;
+
+            // Nav buttons
+            GameObject btnPrev = CreateButton(menuPanel.transform, "BtnPrev", "<", 0.02f, 0.42f, 0.08f, 0.48f);
+            GameObject btnNext = CreateButton(menuPanel.transform, "BtnNext", ">", 0.92f, 0.42f, 0.98f, 0.48f);
+            GameObject btnPlay = CreateButton(menuPanel.transform, "BtnPlay", "PLAY", 0.25f, 0.20f, 0.75f, 0.28f);
+            btnPlay.GetComponent<Image>().color = new Color(0.1f, 0.8f, 0.3f);
+            GameObject btnUnlock = CreateButton(menuPanel.transform, "BtnUnlock", "UNLOCK", 0.25f, 0.20f, 0.75f, 0.28f);
+            btnUnlock.GetComponent<Image>().color = new Color(0.9f, 0.6f, 0.1f);
+
+            // Coin HUD (Home)
+            GameObject coinHudHome = CreateText(menuPanel.transform, "CoinDisplay", "0", 22, TextAnchor.MiddleLeft);
+            RectTransform chRT = coinHudHome.GetComponent<RectTransform>();
+            chRT.anchorMin = new Vector2(0.05f, 0.90f); chRT.anchorMax = new Vector2(0.4f, 0.96f);
+            chRT.offsetMin = Vector2.zero; chRT.offsetMax = Vector2.zero;
+            var homeCoinHUD = coinHudHome.AddComponent<HUDCoinDisplay>();
+            var homeCoinSO = new SerializedObject(homeCoinHUD);
+            homeCoinSO.FindProperty("coinText").objectReferenceValue = coinHudHome.GetComponent<Text>();
+            homeCoinSO.FindProperty("showSessionCoins").boolValue = false;
+            homeCoinSO.ApplyModifiedProperties();
+
+            // Bottom buttons
+            GameObject btnStore = CreateButton(menuPanel.transform, "BtnStore", "STORE", 0.05f, 0.03f, 0.45f, 0.10f);
+            GameObject btnSettings = CreateButton(menuPanel.transform, "BtnSettings", "SETTINGS", 0.55f, 0.03f, 0.95f, 0.10f);
+
+            // ThemeCarouselUI
+            var carousel = menuPanel.AddComponent<ThemeCarouselUI>();
+            var carSO = new SerializedObject(carousel);
+            carSO.FindProperty("themePreviewImage").objectReferenceValue = previewImg;
+            carSO.FindProperty("themeNameText").objectReferenceValue = themeNameGO.GetComponent<Text>();
+            carSO.FindProperty("themeStatusText").objectReferenceValue = statusGO.GetComponent<Text>();
+            carSO.FindProperty("btnPrevious").objectReferenceValue = btnPrev.GetComponent<Button>();
+            carSO.FindProperty("btnNext").objectReferenceValue = btnNext.GetComponent<Button>();
+            carSO.FindProperty("btnPlay").objectReferenceValue = btnPlay.GetComponent<Button>();
+            carSO.FindProperty("btnUnlock").objectReferenceValue = btnUnlock.GetComponent<Button>();
+            carSO.FindProperty("lockOverlay").objectReferenceValue = lockGO;
+            carSO.ApplyModifiedProperties();
+
+            // -- Panel_Stage --
+            GameObject stagePanel = CreatePanel(canvasGO.transform, "Panel_Stage");
+            stagePanel.GetComponent<Image>().color = Color.clear; // G6: transparent so world space is visible
+            stagePanel.SetActive(false);
+
+            GameObject btnBack = CreateButton(stagePanel.transform, "BtnBack", "< BACK", 0.02f, 0.92f, 0.25f, 0.98f);
+            
+            GameObject sessionCoinGO = CreateText(stagePanel.transform, "SessionCoins", "0", 22, TextAnchor.MiddleRight);
+            RectTransform scRT = sessionCoinGO.GetComponent<RectTransform>();
+            scRT.anchorMin = new Vector2(0.6f, 0.92f); scRT.anchorMax = new Vector2(0.95f, 0.98f);
+            scRT.offsetMin = Vector2.zero; scRT.offsetMax = Vector2.zero;
+            var stageCoinHUD = sessionCoinGO.AddComponent<HUDCoinDisplay>();
+            var stageCoinSO = new SerializedObject(stageCoinHUD);
+            stageCoinSO.FindProperty("coinText").objectReferenceValue = sessionCoinGO.GetComponent<Text>();
+            stageCoinSO.FindProperty("showSessionCoins").boolValue = true;
+            stageCoinSO.ApplyModifiedProperties();
+
+            // Record Button
+            GameObject recBtnGO = CreateButton(stagePanel.transform, "BtnRecord", "● REC", 0.3f, 0.02f, 0.7f, 0.12f);
+            recBtnGO.GetComponent<Image>().color = new Color(0.9f, 0.15f, 0.2f);
+            var recBtn = recBtnGO.AddComponent<RecordButtonUI>();
+            var recBtnSO = new SerializedObject(recBtn);
+            recBtnSO.FindProperty("microphoneRecorder").objectReferenceValue = recorder;
+            recBtnSO.FindProperty("buttonImage").objectReferenceValue = recBtnGO.GetComponent<Image>();
+            recBtnSO.FindProperty("bubbleSpawnParent").objectReferenceValue = stagePanel.transform;
+            recBtnSO.ApplyModifiedProperties();
+
+            // Create VoiceClipUI prefab for bubble spawning
+            string bubblePrefabPath = $"{rootPath}/Prefabs/VoiceClipUI.prefab";
+            GameObject bubblePrefab = AssetDatabase.LoadAssetAtPath<GameObject>(bubblePrefabPath);
+            if (bubblePrefab != null)
+            {
+                var recBtnSO2 = new SerializedObject(recBtn);
+                recBtnSO2.FindProperty("soundBubblePrefab").objectReferenceValue = bubblePrefab;
+                recBtnSO2.ApplyModifiedProperties();
+            }
+
+            // -- Popup_Store (minimal placeholder) --
+            GameObject storePopup = CreatePanel(canvasGO.transform, "Popup_Store");
+            storePopup.SetActive(false);
+            var storeUI = storePopup.AddComponent<StorePopupUI>();
+
+            // -- Popup_Settings (minimal placeholder) --
+            GameObject settingsPopup = CreatePanel(canvasGO.transform, "Popup_Settings");
+            settingsPopup.SetActive(false);
+            settingsPopup.AddComponent<SettingsPopupUI>();
+
+            // ── Wire UIManager ──
+            var uiSO = new SerializedObject(uiMgr);
+            uiSO.FindProperty("panelMainMenu").objectReferenceValue = menuPanel;
+            uiSO.FindProperty("panelStage").objectReferenceValue = stagePanel;
+            uiSO.FindProperty("popupStore").objectReferenceValue = storePopup;
+            uiSO.FindProperty("popupSettings").objectReferenceValue = settingsPopup;
+            uiSO.ApplyModifiedProperties();
+
+            // Wire button callbacks
+            btnBack.GetComponent<Button>().onClick.AddListener(() => uiMgr.GoBackToHome());
+            btnStore.GetComponent<Button>().onClick.AddListener(() => uiMgr.OpenStore());
+            btnSettings.GetComponent<Button>().onClick.AddListener(() => uiMgr.OpenSettings());
+
+            // Save
+            string scenePath = $"{rootPath}/Scenes/MonsterVox_Main.unity";
+            EditorSceneManager.SaveScene(scene, scenePath);
+            Debug.Log($"✅ Main Scene created: {scenePath}");
         }
 
-        private static void CreatePrefab(string name, string path, System.Action<GameObject> setup)
-        {
-            if (AssetDatabase.LoadAssetAtPath<GameObject>(path) != null)
-            {
-                Debug.Log($"Prefab already exists: {name}");
-                return;
-            }
+        // ── Helper Methods ──
 
+        private static void EnsureFolders()
+        {
+            string[] folders = { "Data", "Prefabs", "Scenes" };
+            foreach (string f in folders)
+            {
+                string path = $"{rootPath}/{f}";
+                if (!AssetDatabase.IsValidFolder(path))
+                    AssetDatabase.CreateFolder(rootPath, f);
+            }
+        }
+
+        private static void CreateThemeSO(string id, string name, float bpm, int costCoins, int costAds)
+        {
+            string path = $"{rootPath}/Data/{id}.asset";
+            if (AssetDatabase.LoadAssetAtPath<ThemeDataSO>(path) != null) return;
+            
+            ThemeDataSO so = ScriptableObject.CreateInstance<ThemeDataSO>();
+            var obj = new SerializedObject(so);
+            obj.FindProperty("themeID").stringValue = id;
+            obj.FindProperty("themeName").stringValue = name;
+            obj.FindProperty("bpm").floatValue = bpm;
+            obj.FindProperty("unlockCostCoins").intValue = costCoins;
+            obj.FindProperty("unlockCostAds").intValue = costAds;
+            obj.ApplyModifiedProperties();
+            AssetDatabase.CreateAsset(so, path);
+        }
+
+        private static void CreateMonsterSO(string id, string name, VoiceFilterType filter, int costCoins, int costAds)
+        {
+            string path = $"{rootPath}/Data/{id}.asset";
+            if (AssetDatabase.LoadAssetAtPath<MonsterDataSO>(path) != null) return;
+
+            MonsterDataSO so = ScriptableObject.CreateInstance<MonsterDataSO>();
+            var obj = new SerializedObject(so);
+            obj.FindProperty("monsterID").stringValue = id;
+            obj.FindProperty("monsterName").stringValue = name;
+            obj.FindProperty("voiceFilter").enumValueIndex = (int)filter;
+            obj.FindProperty("unlockCostCoins").intValue = costCoins;
+            obj.FindProperty("unlockCostAds").intValue = costAds;
+            obj.ApplyModifiedProperties();
+            AssetDatabase.CreateAsset(so, path);
+        }
+
+        private static void WireCatalog(GameDataCatalog catalog)
+        {
+            ThemeDataSO[] themes = {
+                AssetDatabase.LoadAssetAtPath<ThemeDataSO>($"{rootPath}/Data/Theme_01.asset"),
+                AssetDatabase.LoadAssetAtPath<ThemeDataSO>($"{rootPath}/Data/Theme_02.asset"),
+                AssetDatabase.LoadAssetAtPath<ThemeDataSO>($"{rootPath}/Data/Theme_03.asset"),
+            };
+            MonsterDataSO[] monsters = {
+                AssetDatabase.LoadAssetAtPath<MonsterDataSO>($"{rootPath}/Data/Mon_01.asset"),
+                AssetDatabase.LoadAssetAtPath<MonsterDataSO>($"{rootPath}/Data/Mon_02.asset"),
+                AssetDatabase.LoadAssetAtPath<MonsterDataSO>($"{rootPath}/Data/Mon_03.asset"),
+                AssetDatabase.LoadAssetAtPath<MonsterDataSO>($"{rootPath}/Data/Mon_04.asset"),
+            };
+
+            var so = new SerializedObject(catalog);
+            var themesProp = so.FindProperty("themes");
+            themesProp.arraySize = themes.Length;
+            for (int i = 0; i < themes.Length; i++)
+                themesProp.GetArrayElementAtIndex(i).objectReferenceValue = themes[i];
+
+            var monstersProp = so.FindProperty("monsters");
+            monstersProp.arraySize = monsters.Length;
+            for (int i = 0; i < monsters.Length; i++)
+                monstersProp.GetArrayElementAtIndex(i).objectReferenceValue = monsters[i];
+
+            so.ApplyModifiedProperties();
+        }
+
+        private static GameObject CreateCanvas(string name)
+        {
             GameObject go = new GameObject(name);
-            setup?.Invoke(go);
-            PrefabUtility.SaveAsPrefabAsset(go, path);
-            GameObject.DestroyImmediate(go);
+            Canvas canvas = go.AddComponent<Canvas>();
+            canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+            CanvasScaler scaler = go.AddComponent<CanvasScaler>();
+            scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+            scaler.referenceResolution = new Vector2(1080, 1920);
+            scaler.matchWidthOrHeight = 0.5f;
+            go.AddComponent<GraphicRaycaster>();
+            return go;
+        }
+
+        private static GameObject CreatePanel(Transform parent, string name)
+        {
+            GameObject go = new GameObject(name);
+            go.transform.SetParent(parent, false);
+            RectTransform rt = go.AddComponent<RectTransform>();
+            rt.anchorMin = Vector2.zero; rt.anchorMax = Vector2.one;
+            rt.offsetMin = Vector2.zero; rt.offsetMax = Vector2.zero;
+            Image bg = go.AddComponent<Image>();
+            bg.color = new Color(0.06f, 0.04f, 0.12f, 0.95f);
+            return go;
+        }
+
+        private static GameObject CreateButton(Transform parent, string name, string label,
+            float aMinX, float aMinY, float aMaxX, float aMaxY)
+        {
+            GameObject go = new GameObject(name);
+            go.transform.SetParent(parent, false);
+            RectTransform rt = go.AddComponent<RectTransform>();
+            rt.anchorMin = new Vector2(aMinX, aMinY);
+            rt.anchorMax = new Vector2(aMaxX, aMaxY);
+            rt.offsetMin = Vector2.zero; rt.offsetMax = Vector2.zero;
+            Image img = go.AddComponent<Image>();
+            img.color = new Color(0.25f, 0.15f, 0.4f);
+            go.AddComponent<Button>();
+
+            GameObject textGO = new GameObject("Label");
+            textGO.transform.SetParent(go.transform, false);
+            Text txt = textGO.AddComponent<Text>();
+            txt.text = label;
+            txt.alignment = TextAnchor.MiddleCenter;
+            txt.color = Color.white;
+            txt.fontSize = 24;
+            txt.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            RectTransform trt = textGO.GetComponent<RectTransform>();
+            trt.anchorMin = Vector2.zero; trt.anchorMax = Vector2.one;
+            trt.offsetMin = Vector2.zero; trt.offsetMax = Vector2.zero;
+
+            return go;
+        }
+
+        private static GameObject CreateText(Transform parent, string name, string content, int size, TextAnchor align)
+        {
+            GameObject go = new GameObject(name);
+            go.transform.SetParent(parent, false);
+            go.AddComponent<RectTransform>();
+            Text txt = go.AddComponent<Text>();
+            txt.text = content;
+            txt.fontSize = size;
+            txt.alignment = align;
+            txt.color = Color.white;
+            txt.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            return go;
         }
     }
 }

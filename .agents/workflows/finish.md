@@ -56,22 +56,23 @@ Update the task file:
 
 ### 3.2 Decide where to update (Decision Tree):
 
-```
+```text
 What type of learning is this?
 │
-├─► Common code pattern / Convention / Gotcha?
+├─► Universal/Global rule that applies across ALL domains?
 │   └─► ✅ `.agents/rules/GEMINI.md` (Section: Critical Rules or Learned Patterns)
-│       Example: "Always use SerializeField instead of public", "Unsubscribe events in OnDisable"
+│       Example: "Always use absolute paths", "Never commit plain text passwords"
 │
-├─► Deep technique for a specific stack?
-│   └─► ✅ docs/learned/[stack].md
-│       Example: "Unity Object Pooling setup", "Addressables loading pattern"
+├─► Specific rule, pattern, or deep technique for a specific domain?
+│   └─► ✅ `.agents/learned/[domain].md`
+│       Example domains: `unity-dev.md`, `playable.md`, `art-2d.md`, `ui.md`, `game-designer.md`
+│       Example learning: "Use Prefab Variants for ScriptableObjects", "Phaser 3 texture packing"
 │
 ├─► Improvement to PLANNING or WORKFLOW processes?
-│   └─► ✅ .agents/workflows/*.md — **⚠️ MUST ask user approval before modifying workflow!**
+│   └─► ✅ `.agents/workflows/*.md` — **⚠️ MUST ask user approval before modifying workflow!**
 │
 ├─► Debugging insight (root cause analysis, non-obvious bug)?
-│   └─► ✅ docs/learned/ (relevant stack file, add "Gotchas" section)
+│   └─► ✅ `.agents/learned/[domain].md` (relevant domain file, add "Gotchas" section)
 │       Format: **[Module] [Symptom]**: Root cause was [X] because [Y]
 │
 └─► Only applies to this task, not reusable?
@@ -93,12 +94,12 @@ What type of learning is this?
 
 | Priority | File | When to update | Agent reads when |
 |----------|------|----------------|------------------|
-| 🥇 1st | `.agents/rules/GEMINI.md` | Shared patterns/rules | **Every conversation** |
-| 🥈 2nd | `docs/learned/*.md` | Stack-specific deep knowledge | When working with stack |
+| 🥇 1st | `.agents/rules/GEMINI.md` | Universal/Global rules | **Every conversation** |
+| 🥈 2nd | `.agents/learned/[domain].md`| Domain-specific knowledge | When working within domain |
 | 🥉 3rd | `.agents/workflows/*.md` | Process improvements | When calling workflow |
 
 > [!IMPORTANT]
-> **`.agents/rules/GEMINI.md` is the primary location** because agents ALWAYS read this file first.
+> **`.agents/rules/GEMINI.md` is the primary location** because agents ALWAYS read this file first. Keep it strict to avoid bloat.
 > Only update workflows when the learning relates to PROCESS, not CODE.
 
 ### 3.5 Update files:
@@ -157,8 +158,7 @@ Notify the user:
 ✅ **Task Completed**: [feature_name]
 
 ### Files Updated:
-- `.agents/rules/GEMINI.md`: Added [pattern] rule
-- `docs/learned/[stack].md`: Added [technique] section
+- `.agents/rules/GEMINI.md` or `.agents/learned/[domain].md`: Added [pattern] rule
 
 ### Learnings Extracted:
 1. **Pattern**: [reusable pattern description]

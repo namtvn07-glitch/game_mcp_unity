@@ -4,7 +4,7 @@ Tài liệu này chứa các dữ liệu số học, giá trị và thông số 
 
 ## 1. Currency Generation (Công thức sinh tiền)
 - **Chu kỳ sinh tiền:** Rớt mỗi khi BGM phát xong 1 Loop (VD: 8 giây).
-- **Công thức:** `(Số lượng Monster trên stage) * Base_Drop`
+- **Công thức:** `(Số lượng Monster ĐANG HÁT trên stage) * Base_Drop`
 - **Base_Drop:** 1 Spooky Coin.
 - **Giới hạn rơi:** Không giới hạn, miễn là game vẫn mở màn hình Sân khấu.
 - **Ad Reward (Nhận XU):** Xem 1 quảng cáo Rewarded Video = 100 Spooky Coins.
@@ -31,29 +31,29 @@ Danh sách quái vật. Quái đầu tiên được mở sẵn.
 
 | Monster ID | Name | Base Asset | Voice Filter | Unlock Cost |
 | :--- | :--- | :--- | :--- | :--- |
-| `Mon_01` | Normal Cyclops | `Monster_01` | `None` (Normal) | Mở sẵn |
-| `Mon_02` | Chipmunk Ghost | `Monster_02` | `Pitch-Up` | 150 Xu / 1 Ad |
+| `Mon_01` | Normal Cyclops | `Monster_01` | `Normal` | Mở sẵn |
+| `Mon_02` | Chipmunk Ghost | `Monster_02` | `PitchUp` | 150 Xu / 1 Ad |
 | `Mon_03` | Robo Bat | `Monster_03` | `Robot` | 300 Xu / 1 Ad |
-| `Mon_04` | Deep Blob | `Monster_04` | `Pitch-Down` | 400 Xu / 2 Ads |
-| `Mon_05` | Echo Skeleton | `Monster_05` | `Echo/Delay` | 500 Xu / 2 Ads |
-| `Mon_06` | Alien Soprano | `Monster_06` | `Pitch-Up High` | 600 Xu / 2 Ads |
-| `Mon_07` | Glitch Demon | `Monster_07` | `Bitcrusher` | 700 Xu / 3 Ads |
-| `Mon_08` | Chorus Mummy | `Monster_08` | `Chorus` | 800 Xu / 3 Ads |
-| `Mon_09` | Reverb Zombie | `Monster_09` | `Reverb Heavy`| 900 Xu / 3 Ads |
-| `Mon_10` | Auto-Tune Orc | `Monster_10` | `Auto-Tune` | 1000 Xu / 4 Ads |
-| `Mon_11` | Flanger Spider | `Monster_11` | `Flanger` | 1100 Xu / 4 Ads |
-| `Mon_12` | Phaser Pumpk | `Monster_12` | `Phaser` | 1200 Xu / 4 Ads |
-| `Mon_13` | Bass Wolf | `Monster_13` | `Bass Boost` | 1300 Xu / 5 Ads |
-| `Mon_14` | Tremolo Witch | `Monster_14` | `Tremolo` | 1400 Xu / 5 Ads |
-| `Mon_15` | Squeaky Rat | `Monster_15` | `Pitch-Up Max`| 1500 Xu / 5 Ads |
-| `Mon_16` | Growl Bear | `Monster_16` | `Distortion` | 1600 Xu / 6 Ads |
-| `Mon_17` | Radio Frank | `Monster_17` | `Radio EQ` | 1700 Xu / 6 Ads |
-| `Mon_18` | Alien Bass | `Monster_18` | `Sub-Bass` | 1800 Xu / 6 Ads |
-| `Mon_19` | Spectral Cat | `Monster_19` | `Reverse FX` | 1900 Xu / 7 Ads |
-| `Mon_20` | Mega Boss | `Monster_20` | `Multi-Layer` | 2000 Xu / 8 Ads |
+| `Mon_04` | Deep Blob | `Monster_04` | `PitchDown` | 400 Xu / 2 Ads |
+| `Mon_05` | Echo Skeleton | `Monster_05` | `Normal` | 500 Xu / 2 Ads |
+| `Mon_06` | Alien Soprano | `Monster_06` | `PitchUp` | 600 Xu / 2 Ads |
+| `Mon_07` | Glitch Demon | `Monster_07` | `Robot` | 700 Xu / 3 Ads |
+| `Mon_08` | Chorus Mummy | `Monster_08` | `Normal` | 800 Xu / 3 Ads |
+| `Mon_09` | Reverb Zombie | `Monster_09` | `PitchDown`| 900 Xu / 3 Ads |
+| `Mon_10` | Auto-Tune Orc | `Monster_10` | `PitchUp` | 1000 Xu / 4 Ads |
+| `Mon_11` | Flanger Spider | `Monster_11` | `Robot` | 1100 Xu / 4 Ads |
+| `Mon_12` | Phaser Pumpk | `Monster_12` | `Normal` | 1200 Xu / 4 Ads |
+| `Mon_13` | Bass Wolf | `Monster_13` | `PitchDown` | 1300 Xu / 5 Ads |
+| `Mon_14` | Tremolo Witch | `Monster_14` | `PitchUp` | 1400 Xu / 5 Ads |
+| `Mon_15` | Squeaky Rat | `Monster_15` | `PitchUp`| 1500 Xu / 5 Ads |
+| `Mon_16` | Growl Bear | `Monster_16` | `Robot` | 1600 Xu / 6 Ads |
+| `Mon_17` | Radio Frank | `Monster_17` | `Normal` | 1700 Xu / 6 Ads |
+| `Mon_18` | Alien Bass | `Monster_18` | `PitchDown` | 1800 Xu / 6 Ads |
+| `Mon_19` | Spectral Cat | `Monster_19` | `Robot` | 1900 Xu / 7 Ads |
+| `Mon_20` | Mega Boss | `Monster_20` | `PitchDown` | 2000 Xu / 8 Ads |
 
 ## 4. Slots Expansion Data (Tối đa 5 Slots)
-Người chơi bắt đầu với 3 Slots trên sân khấu.
+Người chơi bắt đầu với 3 Slots trên sân khấu. (Mở rộng Slot áp dụng Global cho toàn bộ Theme).
 
 | Slot Level | Total Slots | Unlock Cost |
 | :--- | :--- | :--- |
@@ -61,11 +61,4 @@ Người chơi bắt đầu với 3 Slots trên sân khấu.
 | 2 | 4 Slots | 500 Xu / 2 Ads |
 | 3 | 5 Slots (Max) | 1500 Xu / 5 Ads |
 
-## 5. IAP Data (In-App Purchases)
-Giá trị Hard Currency thực tế.
 
-| Product ID | Description | Reward | Price (USD) |
-| :--- | :--- | :--- | :--- |
-| `iap_premium` | Gói No-Ads + Mở full Theme/Monster | Remove Ads, Unlock All | $4.99 |
-| `iap_coin_small` | Gói Xu Nhỏ | 1000 Coins | $0.99 |
-| `iap_coin_large` | Gói Xu Lớn | 5000 Coins | $3.99 |

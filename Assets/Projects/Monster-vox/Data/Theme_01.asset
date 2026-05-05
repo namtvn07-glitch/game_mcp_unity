@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 598579aeabc9c8e4c9c0f89757c0bbbe, type: 3}
+  m_Name: Theme_01
+  m_EditorClassIdentifier: 
+  themeID: Theme_01
+  themeName: Spooky Room
+  bgmClip: {fileID: 8300000, guid: 410268f656d76944c88c48fd486f912a, type: 3}
+  backgroundSprite: {fileID: 21300000, guid: 3b9dc61c79189ab438a510434d01142f, type: 3}
+  themePrefab: {fileID: 4784504357500010836, guid: a3afc7ad3ab1abd47a4204b543b3e16a, type: 3}
+  bpm: 120
+  unlockCostCoins: 0
+  unlockCostAds: 0

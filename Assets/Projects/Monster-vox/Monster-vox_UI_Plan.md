@@ -17,9 +17,9 @@
 - **Top Bar:**
   - `Btn_BackToHome`: Nút quay lại sảnh.
   - `HUD_SessionCoins`: Bộ đếm số xu nhặt được trong lần chơi này.
-  - `Btn_ScreenRecord`: Nút quay màn hình (Đổi state khi đang quay).
 - **Center Area (Gameplay HUD):**
   - Không có nút tĩnh, là không gian cho `Prop_StageSlot` và vật lý rơi đồng xu.
+  - `UI_Bar_Beat`: Thanh hiển thị nhịp độ nhạc nền để người chơi dễ canh nhịp (Optional).
 - **Bottom Bar:**
   - `Btn_Record_Hold`: Nút thu âm khổng lồ ở giữa. Giữ để thu âm.
   - `Item_SoundBubble`: Bong bóng sinh ra trên nút Record sau khi thả tay.
@@ -34,8 +34,7 @@
   - Các ô Item bán (Hiển thị Avatar, Tên, Giá).
   - `Btn_Buy_Coin`: Nút mua bằng xu (chứa giá text).
   - `Btn_Buy_Ad`: Nút xem quảng cáo để nhận (có icon Play).
-- **IAP Banners:**
-  - `Btn_IAP_Premium`: Nút mua gói No Ads.
+
 
 ## 4. Popup Cài Đặt (`UI_Popup_Settings`)
 - **Header:** "SETTINGS" và `Btn_CloseSettings`.
@@ -43,5 +42,4 @@
   - `Slider_Volume_BGM`: Chỉnh nhạc nền.
   - `Slider_Volume_SFX`: Chỉnh âm thanh hiệu ứng.
   - `Slider_Volume_Vocal`: Chỉnh âm lượng hát của quái vật.
-  - `Btn_RestorePurchases`: Khôi phục IAP.
   - `Btn_Tutorial`: Xem lại hướng dẫn.

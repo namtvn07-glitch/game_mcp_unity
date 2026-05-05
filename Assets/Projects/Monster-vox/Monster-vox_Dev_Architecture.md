@@ -36,6 +36,4 @@ Sử dụng JSON để lưu trữ dữ liệu người chơi (hoặc PlayerPrefs
 - Hệ thống Physics 2D đơn giản, chủ yếu sử dụng `BoxCollider2D` hoặc `CircleCollider2D` để nhận diện điểm thả (Drop target) cho các Monster Slot và nhận diện Tap để nhặt xu.
 
 ## 5. Third-party SDKs
-- **Screen Recorder SDK:** NatCorder hoặc Everyplay (đã ngừng) -> Cần tìm plugin ghi màn hình hỗ trợ audio nội bộ tốt trên Mobile.
 - **Ads SDK:** Unity Ads hoặc AppLovin MAX (cho Rewarded video).
-- **IAP:** Unity IAP.

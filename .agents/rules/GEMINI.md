@@ -1,9 +1,14 @@
+---
+trigger: always_on
+---
+
 # Project Specific Rules: Unity MCP
 
 This document contains rules, code conventions, and lessons learned specifically for this Unity Game project.
 The AI system (Antigravity) will prioritize reading this file in combination with the Global GEMINI.md before writing or reviewing code.
 
 ## 1. Project Architecture
+
 - **Data Layer:** (Example: Prefer using ScriptableObjects for data storage instead of static JSON).
 - **Logic Layer:** (Example: Manage logic via Managers/Singletons or Dependency Injection).
 - **UI Layer:** (Example: Do not write game logic in UI scripts; UI should only listen to events to update visuals).

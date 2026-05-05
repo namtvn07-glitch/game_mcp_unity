@@ -15,7 +15,7 @@ namespace MonsterVox.Audio
         private string activeMicrophoneDevice = null;
         private Coroutine recordingTimeoutCoroutine;
 
-        private void Awake()
+        private void Start()
         {
             if (audioConfig == null)
             {

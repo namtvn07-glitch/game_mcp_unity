@@ -7,7 +7,7 @@
 - **Luồng dữ liệu thu âm (Microphone):** 
   - Khi người chơi giữ nút Record (tối đa 2 giây), thiết bị bắt đầu lưu data vào một Audio Buffer.
   - Khi thả nút, buffer này phải được phân tích: Cắt bỏ khoảng lặng (Trim Silence) ở đầu và cuối.
-  - Sau đó, audio phải được **ép nhịp (Time-Stretch)** hoặc **chuẩn hóa độ dài** sao cho khớp đúng 1 Bar (hoặc 1/2 Bar) của BPM nhạc nền hiện tại. Không làm méo pitch nếu chỉ giãn nhịp thông thường.
+  - Sau đó, hệ thống giữ nguyên độ dài AudioClip gốc nhưng áp dụng **Silence Padding (Chèn khoảng lặng)** theo các mốc Grid (VD: 500ms) để tự động lặp lại đúng vào nhịp gốc (Xem chi tiết thuật toán tại `technical-spec.md`). Không sử dụng Time-Stretch để tránh làm biến dạng âm thanh.
 - **Luồng phát nhạc (Zero Latency Sync):**
   - Nhạc nền (BGM) loop liên tục.
   - Mọi AudioClip từ Monster (khi hát) PHẢI được lên lịch phát bằng hệ thống Audio DSP time để đảm bảo beat-snapping chính xác 100%. Nếu một Monster được thả bong bóng giữa nhịp, nó sẽ đợi đến vạch nhịp (beat) tiếp theo để bắt đầu phát, tuyệt đối không được lệch nhịp.
@@ -34,6 +34,4 @@
 
 ## 5. Third-Party / OS Requirements
 - Cấp quyền Microphone cho iOS/Android.
-- Tính năng Quay Màn Hình In-game (bao gồm Audio In-game và cả Audio từ Microphone đang phát).
-- Native Share để share video mp4 lên TikTok/Mạng xã hội.
-- Tích hợp IAP (Mua xu) và Ads (Rewarded Video).
+- Tích hợp Ads (Rewarded Video) để mở khóa nội dung.

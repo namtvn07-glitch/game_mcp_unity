@@ -15,6 +15,11 @@ namespace MonsterVox.Audio
         private bool isPlaying = false;
         private const double SCHEDULE_THRESHOLD = 0.1d; // 100ms look-ahead
 
+        public void SetAudioConfig(AudioConfigSO config)
+        {
+            audioConfig = config;
+        }
+
         public void ReceiveNewClip(AudioClip newClip, UnityEngine.Audio.AudioMixerGroup mixerGroup = null)
         {
             if (newClip == null) return;

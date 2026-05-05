@@ -56,12 +56,14 @@
 | `Icon_Back` | Mũi tên quay lại |  |
 | `Icon_Store` | Biểu tượng Cửa hàng |  |
 | `Icon_Settings` | Bánh răng Cài đặt |  |
-| `Icon_ScreenRecord` | Camera/Video | Trạng thái: Bình thường, Đang quay (Đỏ) |
 | `Icon_Lock` | Ổ khóa | Dùng đè lên Theme/Monster chưa mua |
-| `Icon_AdPlay` | Nút xem Video Ads | Biểu tượng Play tam giác |
+| `Btn_Buy_Ad` | Nút xem Video Ads | Biểu tượng Play tam giác |
+| `Icon_Collection` | Biểu tượng Bộ Sưu Tập | Dùng cho Btn_Collection ở sảnh |
+| `Icon_Slot` | Biểu tượng Slot/Bục đứng | Dùng cho Tab_Slots trong Store |
 | `Item_SoundBubble` | Bong bóng âm thanh lơ lửng | Có hiệu ứng sóng âm ở trong |
 | `UI_Frame_Avatar` | Khung chân dung Monster | Dùng trong Store |
-| `UI_Bar_Beat` | Thanh hiển thị nhịp độ |  |
+| `UI_Bar_Beat` | Thanh hiển thị nhịp độ | Để ở màn hình Gameplay |
+| `HUD_SessionCoins` | Khung nền hiển thị số xu nhặt được | |
 
 ## 5. VFX Textures
 - `Tex_SmokeParticle` (Cho khói khi quái vật Spawn)

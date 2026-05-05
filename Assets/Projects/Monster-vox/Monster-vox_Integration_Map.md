@@ -7,7 +7,7 @@
 - **Art/Anim:** Load Background Sprite (e.g., `BG_Theme1_SpookyRoom`). Load `Prop_StageSlot` tương ứng. Các Monster có sẵn trên sân khấu chạy `Anim_Spawn`.
 - **VFX:** Chạy `VFX_SmokePoof` tại các vị trí Slot.
 - **SFX:** Phát BGM của Theme (e.g., `BGM_Theme1_Base`), phát `SFX_MonsterSpawn`, dừng `BGM_HomeMenu`.
-- **UI:** Ẩn `UI_Screen_MainMenu`, hiện `UI_Screen_Stage` (với Nút Record, HUD Coin, Nút Quay màn hình).
+- **UI:** Ẩn `UI_Screen_MainMenu`, hiện `UI_Screen_Stage` (với Nút Record, HUD Coin, Thanh nhịp độ UI_Bar_Beat).
 
 ### Trigger: `OnMicrophoneRecordStart`
 - **Dev:** `MicrophoneRecorder.StartRecording()`.
@@ -31,7 +31,7 @@
 - **UI:** Xóa `Item_SoundBubble` khỏi ngón tay.
 
 ### Trigger: `OnEconomyAutoDrop` (BGM hoàn thành 1 chu kỳ)
-- **Dev:** Tính toán số tiền: `X = Monsters * Base_Drop`. Rớt xu dùng 2D Physics Gravity.
+- **Dev:** Tính toán số tiền: `X = Monsters_Singing * Base_Drop` (Chỉ quái đang hát mới rớt tiền). Rớt xu dùng 2D Physics Gravity.
 - **Art/Anim:** Monster nhún nhẹ hoặc thả đồng xu (`Icon_Coin_Spooky`).
 - **VFX:** Áp dụng lực đẩy (AddForce) tạo hiệu ứng parabol (`VFX_CoinDrop`).
 - **SFX:** Phát `SFX_CoinDrop` khi xu sinh ra.
