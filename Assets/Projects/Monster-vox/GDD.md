@@ -26,8 +26,8 @@ Vòng lặp game được thiết kế theo hướng **Casual tinh gọn**, tậ
 
 **Giai đoạn 2: Sân Khấu Sáng Tạo (The "Fun" Phase)**
 4. **Setup Sân Khấu:** Nhạc nền bắt đầu phát. Quái vật trống đang đứng chờ trên các "Slot biểu diễn" (Bục).
-5. **Thu âm (Record):** Người chơi giữ nút to màu đỏ để thu bất kỳ tiếng động nào (dưới 2 giây).
-6. **Kéo & Thả (Mix):** Ném bong bóng âm thanh vào một Quái vật. Nó lập tức nhún nhảy và "hát" lại tiếng động chuẩn theo nhịp nhạc.
+5. **Thu âm (Record):** Người chơi kéo Monster vào Slot, một Popup thu âm hiện lên. Nhấn nút Record để thu bất kỳ tiếng động nào (dưới 2 giây).
+6. **Kéo & Thả (Mix):** Khi thu âm xong và xác nhận, Quái vật lập tức nhún nhảy và "hát" lại tiếng động chuẩn theo nhịp nhạc.
 7. **Thu thập (Earn):** Mỗi khi một đoạn Mix hoàn chỉnh và phát liên tục một chu kỳ, người chơi sẽ nhận được phần thưởng là "Tiền Vàng / Xu Cảm Hứng" rơi ra trực tiếp trên sân khấu.
 
 **Giai đoạn 3: Nâng Cấp (Meta Progression)**

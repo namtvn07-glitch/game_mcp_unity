@@ -8,10 +8,11 @@
 
 ### 2. [CORE_LOOP & GAMEPLAY]
 Vòng lặp cốt lõi tập trung vào sự thỏa mãn tức thì (Instant Gratification):
-- **Core Loop:** Người chơi chọn Theme (Sảnh chính) -> Vào Sân khấu, thu âm thanh ngẫu nhiên (<2s) -> Kéo thả bong bóng âm thanh vào Quái vật để tạo bản mix -> Quái vật tự động nhún nhảy và hát theo nhịp -> Thu thập Tiền rơi ra -> Dùng tiền nâng cấp/mở khóa Theme và Quái vật mới.
+- **Core Loop:** Người chơi chọn Theme (Sảnh chính) -> Vào Sân khấu, chọn Monster từ danh sách (mở khóa nếu cần) -> Kéo thả Monster vào Slot trống (hoặc thay thế Monster cũ) -> Cửa sổ "New Animal" hiện lên để thu âm -> Monster lưu đoạn âm thanh, nhún nhảy và hát theo nhịp -> Thu thập Tiền rơi ra -> Dùng tiền nâng cấp/mở khóa.
 - **Mechanics:** 
-  - Chạm và giữ (Hold) nút đỏ để thu âm (<2 giây).
-  - Kéo và thả (Drag & Drop) bong bóng âm thanh vào các slot (bục đứng của quái vật).
+  - Cuộn danh sách bên trái để xem và mở khoá Monster.
+  - Kéo và thả (Drag & Drop) Monster từ danh sách bên trái vào các placeholder/slot trên sân khấu.
+  - Tương tác với Popup "New Animal" (Nút Record, có đếm ngược, Nút Play nghe lại, Try Again thu lại, Confirm chốt âm thanh).
   - Tap để thu thập xu rơi trên màn hình.
 - **Pacing & Atmosphere:** 
   - Nhịp độ nhanh, tạo tiếng cười và dopamine ngay lập tức chỉ sau 3 giây thu âm. 
@@ -22,7 +23,7 @@ Vòng lặp cốt lõi tập trung vào sự thỏa mãn tức thì (Instant Gra
 Danh sách tính năng cho MVP Prototype:
 - **Hệ thống Sảnh chính (Home/Theme Selection):** Menu dạng Playlist hoặc cánh cửa để chọn Stage.
 - **Hệ thống Thu âm & Xử lý Âm thanh:** Ghi âm microphone (<2s) và thuật toán Auto-Quantize (ép nhịp BPM), kết hợp Voice Filters (Pitch-up, trầm, xoắn giọng).
-- **Cơ chế Mixing (Kéo & Thả):** Hệ thống Drag & Drop gán âm thanh vào Monster Slots (Bắt đầu với 3 Slot mặc định).
+- **Cơ chế Mixing (Kéo & Thả):** Hệ thống Drag & Drop chọn quái vật từ danh sách và thả vào các Placeholder slots trên sân khấu. Khi thả thành công sẽ mở popup "New Animal" để thu âm.
 - **Hệ thống Kinh tế & Nâng cấp (Meta Progression):** Cơ chế sinh xu dựa trên chu kỳ phát nhạc hoàn chỉnh, dùng để mở khóa Theme, Monster và Slot biểu diễn.
 - **Hệ thống Kiếm tiền (Monetization):** Tích hợp Rewarded Ads (nhận xu, mở khóa nhanh Theme, thêm slot). Không sử dụng IAP.
 

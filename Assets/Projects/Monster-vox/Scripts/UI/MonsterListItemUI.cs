@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using UnityEngine.EventSystems;
 using MonsterVox.Data;
 using MonsterVox.Managers;
@@ -11,12 +12,12 @@ namespace MonsterVox.UI
     {
         [Header("UI Elements")]
         [SerializeField] private Image monsterImage;
-        [SerializeField] private Text nameText;
+        [SerializeField] private TextMeshProUGUI nameText;
         [SerializeField] private GameObject lockOverlay;
         [SerializeField] private Button unlockCoinBtn;
-        [SerializeField] private Text unlockCoinText;
+        [SerializeField] private TextMeshProUGUI unlockCoinText;
         [SerializeField] private Button unlockAdsBtn;
-        [SerializeField] private Text unlockAdsText;
+        [SerializeField] private TextMeshProUGUI unlockAdsText;
 
         private MonsterDataSO data;
         private bool isUnlocked;

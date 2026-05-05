@@ -26,3 +26,5 @@ The AI system (Antigravity) will prioritize reading this file in combination wit
 > *This section will be automatically updated by the `/finish` command when new lessons are discovered during work.*
 
 - (Example) Always unsubscribe from events (`-=`) in `OnDisable` or `OnDestroy` to prevent memory leaks.
+- **[Gotcha] Audio Muting & Pausing:** Avoid using `Time.timeScale = 0f` or `AudioListener.pause = true` just to mute background music or pause a game loop, as it stops UI animations, coroutines, and newly generated audio playback. Use event-driven direct muting (`audioSource.mute = true`) and `WaitForSecondsRealtime` (or `Time.unscaledDeltaTime`) instead.
+- **[Gotcha] UI Button Listeners in Editor Scripts:** Do not use `button.onClick.AddListener(() => ...)` dynamically within Editor setup scripts. Lambda listeners do not serialize into the scene file, so the buttons will be broken at runtime. Instead, assign the `Button` references to `[SerializeField]` properties using `SerializedObject` and call `AddListener` in `Awake/Start()` of a MonoBehaviour.

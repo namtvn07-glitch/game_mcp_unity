@@ -20,12 +20,13 @@ Dev cần thiết lập các biến số này ở mức Global/Singleton để t
 ## 3. Đặc Tả Logic Luồng Xử Lý (Logic Flow Specification)
 
 ### 3.1. Tính Năng Ghi Âm (Audio Input Module)
-* **Trigger Start:** `OnPointerDown` vào nút [RECORD].
+* **Trigger Start:** Nhấn nút [RECORD] trên cửa sổ Popup "New Animal".
     * Hệ thống bắt đầu ghi dữ liệu từ Microphone vào buffer.
+    * Tắt nhạc nền (BGM) thông qua event `OnRecordingStateChanged`.
 * **Trigger Stop:** Kích hoạt khi xảy ra 1 trong 2 điều kiện:
-    1.  `OnPointerUp` (Người dùng nhả nút).
+    1.  Người dùng bấm nút Stop (nếu có, hiện tại tự động chạy hết thời gian).
     2.  Bộ đếm thời gian chạm mốc `MAX_RECORD_TIME` (2000ms).
-* **Output:** Tạo ra một `Raw Audio Data` tạm thời trong RAM.
+* **Output:** Tạo ra một `Raw Audio Data` tạm thời trong RAM. Bật lại nhạc nền.
 
 ### 3.2. Tính Năng Tiền Xử Lý (Pre-processing & Trimming Module)
 *Ngay sau khi có `Raw Audio Data`, hệ thống chạy ngầm thuật toán dọn dẹp trước khi cho phép người chơi kéo thả.*

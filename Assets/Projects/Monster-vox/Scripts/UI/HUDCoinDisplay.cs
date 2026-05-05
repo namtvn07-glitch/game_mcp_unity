@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using MonsterVox.Managers;
 
 namespace MonsterVox.UI
@@ -10,7 +11,7 @@ namespace MonsterVox.UI
     /// </summary>
     public class HUDCoinDisplay : MonoBehaviour
     {
-        [SerializeField] private Text coinText;
+        [SerializeField] private TextMeshProUGUI coinText;
         [SerializeField] private bool showSessionCoins;
 
         private void OnEnable()

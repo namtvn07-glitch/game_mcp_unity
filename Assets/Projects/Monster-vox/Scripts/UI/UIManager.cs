@@ -17,6 +17,12 @@ namespace MonsterVox.UI
         [Header("Popups")]
         [SerializeField] private GameObject popupStore;
         [SerializeField] private GameObject popupSettings;
+        [SerializeField] private NewAnimalPopupUI popupNewAnimal;
+
+        [Header("Buttons")]
+        [SerializeField] private UnityEngine.UI.Button btnBack;
+        [SerializeField] private UnityEngine.UI.Button btnStore;
+        [SerializeField] private UnityEngine.UI.Button btnSettings;
 
         private bool _started;
 
@@ -25,6 +31,11 @@ namespace MonsterVox.UI
             // Ensure popups start hidden
             if (popupStore != null) popupStore.SetActive(false);
             if (popupSettings != null) popupSettings.SetActive(false);
+            if (popupNewAnimal != null) popupNewAnimal.gameObject.SetActive(false);
+
+            if (btnBack != null) btnBack.onClick.AddListener(GoBackToHome);
+            if (btnStore != null) btnStore.onClick.AddListener(OpenStore);
+            if (btnSettings != null) btnSettings.onClick.AddListener(OpenSettings);
 
             // Subscribe after all Managers have initialized in their Awake()
             if (GameManager.Instance != null)
@@ -39,6 +50,8 @@ namespace MonsterVox.UI
             }
 
             _started = true;
+            
+            MonsterVox.Gameplay.StageManager.OnMonsterAssigned += HandleMonsterAssigned;
         }
 
         private void OnEnable()
@@ -57,6 +70,7 @@ namespace MonsterVox.UI
             {
                 GameManager.Instance.OnStateChanged -= HandleStateChanged;
             }
+            MonsterVox.Gameplay.StageManager.OnMonsterAssigned -= HandleMonsterAssigned;
         }
 
         private void HandleStateChanged(GameState state)
@@ -109,6 +123,15 @@ namespace MonsterVox.UI
         {
             if (popupStore != null) popupStore.SetActive(false);
             if (popupSettings != null) popupSettings.SetActive(false);
+            if (popupNewAnimal != null) popupNewAnimal.gameObject.SetActive(false);
+        }
+
+        private void HandleMonsterAssigned(MonsterVox.Gameplay.MonsterController controller, MonsterDataSO data)
+        {
+            if (popupNewAnimal != null)
+            {
+                popupNewAnimal.Open(controller, data);
+            }
         }
 
         private void ShowPanel(GameObject panel)

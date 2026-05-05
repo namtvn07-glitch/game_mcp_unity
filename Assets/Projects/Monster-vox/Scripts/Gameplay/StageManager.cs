@@ -26,6 +26,8 @@ namespace MonsterVox.Gameplay
         private bool _started;
         private Camera mainCamera;
 
+        public static event System.Action<MonsterController, MonsterDataSO> OnMonsterAssigned;
+
         private void Awake()
         {
             mainCamera = Camera.main;
@@ -214,6 +216,9 @@ namespace MonsterVox.Gameplay
                 controller.Setup(monsterData);
                 targetSlot.AssignMonster(controller);
                 activeMonsters[slotIndex] = controller;
+                
+                OnMonsterAssigned?.Invoke(controller, monsterData);
+                
                 return true;
             }
 

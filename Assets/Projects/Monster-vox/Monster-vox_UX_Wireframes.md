@@ -16,9 +16,11 @@ graph TD
     Home -->|Click Store| Store[UI_Popup_Store]
     Home -->|Click Settings| Settings[UI_Popup_Settings]
     
-    Stage -->|Hold Record| Record((Recording Audio))
-    Record -->|Release| SpawnBubble((Spawn Bubble))
-    SpawnBubble -->|Drag & Drop| Stage
+    Stage -->|Scroll & Drag Monster| Slot((Drop to Slot))
+    Slot -->|Trigger| NewAnimalPopup[UI_Popup_NewAnimal]
+    NewAnimalPopup -->|Click Record| Record((Recording Audio))
+    Record -->|Timeout/Stop| Confirm((Confirm & Save))
+    Confirm -->|Assign to Monster| Stage
     Stage -->|Click Back| Home
     
     Store -->|Buy Item| CheckCoin{Enough Coin?}
@@ -30,8 +32,8 @@ graph TD
 
     %% Assign Styles
     class Home,Stage screen;
-    class Store,Settings popup;
-    class Record,SpawnBubble,UnlockItem action;
+    class Store,Settings,NewAnimalPopup popup;
+    class Record,Slot,UnlockItem,Confirm action;
 ```
 
 ## 2. ASCII Wireframes
@@ -62,23 +64,37 @@ graph TD
 ### Màn hình Sân Khấu (`UI_Screen_Stage`)
 ```text
 +---------------------------------------+
-|                 STAGE                 |
-|                                       |
-|  [Btn_Back]    (0 Coins)              |
+|  [Btn_Back]                   (0 Coins) |
 |---------------------------------------|
-|                                       |
-|                                       |
-|                                       |
-|                                       |
-|     [Slot 1]    [Slot 2]    [Slot 3]  |
-|      (Mon)       (Mon)       (Mon)    |
-|                                       |
-|                                       |
-|                                       |
-|             (Sound Bubble)            |
-|           +---------------+           |
-|           |  HOLD RECORD  |           |
-|           +---------------+           |
+| [Mon1] |                              |
+| [150$] |                              |
+|--------|                              |
+| [Mon2] |     [Slot 1]    [Slot 2]     |
+| [Unlock]     (Empty)     (Empty)      |
+|--------|                              |
+| [Mon3] |                              |
+| [Open] |     [Slot 3]                 |
+|--------|     (Empty)                  |
+| [Mon4] |                              |
+| [150$] |                              |
++---------------------------------------+
+```
+
+### Popup New Animal (`UI_Popup_NewAnimal`)
+```text
++---------------------------------------+
+|  +---------------------------------+  |
+|  |           NEW ANIMAL            |  |
+|  |---------------------------------|  |
+|  |           [ Portrait ]          |  |
+|  |           [ InputName]          |  |
+|  |                                 |  |
+|  |            Timer 00:02          |  |
+|  |                                 |  |
+|  |        [  Btn Record  ]         |  |
+|  |                                 |  |
+|  |   [Try Again] [Play] [Confirm]  |  |
+|  +---------------------------------+  |
 +---------------------------------------+
 ```
 

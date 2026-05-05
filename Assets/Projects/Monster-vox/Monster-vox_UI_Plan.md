@@ -17,14 +17,28 @@
 - **Top Bar:**
   - `Btn_BackToHome`: Nút quay lại sảnh.
   - `HUD_SessionCoins`: Bộ đếm số xu nhặt được trong lần chơi này.
+- **Left Panel (Monster Selection):**
+  - `ScrollList_Monsters`: Danh sách cuộn dọc chứa các Monster.
+  - Mỗi Item trong danh sách: Ảnh quái vật, Tình trạng khóa/mở khóa, Nút mở khóa (giá xu/quảng cáo).
+  - Có thể kéo thả (Drag & Drop) quái vật đã mở khóa từ danh sách này vào các placeholder trên sân khấu.
 - **Center Area (Gameplay HUD):**
-  - Không có nút tĩnh, là không gian cho `Prop_StageSlot` và vật lý rơi đồng xu.
+  - `Prop_StageSlot` (Placeholders): Các bục đứng để thả quái vật vào.
+  - Vật lý rơi đồng xu.
   - `UI_Bar_Beat`: Thanh hiển thị nhịp độ nhạc nền để người chơi dễ canh nhịp (Optional).
-- **Bottom Bar:**
-  - `Btn_Record_Hold`: Nút thu âm khổng lồ ở giữa. Giữ để thu âm.
-  - `Item_SoundBubble`: Bong bóng sinh ra trên nút Record sau khi thả tay.
 
-## 3. Popup Cửa Hàng (`UI_Popup_Store`)
+## 3. Popup Thu Âm Mới (`NewAnimalPopupUI`)
+- **Center Panel:**
+  - `Img_Portrait`: Ảnh chân dung quái vật vừa được thả vào slot.
+  - `Input_Name`: Cho phép người chơi đặt tên.
+  - `Txt_Timer`: Đếm ngược thời gian thu âm.
+- **Buttons (Trạng thái trước khi thu âm):**
+  - `Btn_Record`: Nút to ở giữa để bắt đầu thu âm (sẽ bị ẩn sau khi thu xong).
+- **Buttons (Trạng thái sau khi thu âm):**
+  - `Btn_TryAgain`: Thu âm lại.
+  - `Btn_Play`: Nghe lại bản ghi.
+  - `Btn_Confirm`: Chốt đoạn thu âm và gán cho quái vật để bắt đầu biểu diễn.
+
+## 4. Popup Cửa Hàng (`UI_Popup_Store`)
 - **Header:**
   - Tiêu đề "STORE".
   - `Btn_CloseStore`: Đóng popup.

@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using MonsterVox.Data;
 using MonsterVox.Managers;
 
@@ -13,8 +14,8 @@ namespace MonsterVox.UI
     {
         [Header("UI References")]
         [SerializeField] private Image themePreviewImage;
-        [SerializeField] private Text themeNameText;
-        [SerializeField] private Text themeStatusText;
+        [SerializeField] private TextMeshProUGUI themeNameText;
+        [SerializeField] private TextMeshProUGUI themeStatusText;
         [SerializeField] private Button btnPrevious;
         [SerializeField] private Button btnNext;
         [SerializeField] private Button btnPlay;

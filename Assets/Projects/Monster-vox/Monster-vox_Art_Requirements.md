@@ -60,8 +60,8 @@
 | `Btn_Buy_Ad` | Nút xem Video Ads | Biểu tượng Play tam giác |
 | `Icon_Collection` | Biểu tượng Bộ Sưu Tập | Dùng cho Btn_Collection ở sảnh |
 | `Icon_Slot` | Biểu tượng Slot/Bục đứng | Dùng cho Tab_Slots trong Store |
-| `Item_SoundBubble` | Bong bóng âm thanh lơ lửng | Có hiệu ứng sóng âm ở trong |
-| `UI_Frame_Avatar` | Khung chân dung Monster | Dùng trong Store |
+| `UI_Popup_NewAnimal` | Khung nền popup thu âm | Chứa Avatar, Tên, Nút Record, Các nút hành động khác |
+| `UI_Frame_Avatar` | Khung chân dung Monster | Dùng trong Store và Popup New Animal |
 | `UI_Bar_Beat` | Thanh hiển thị nhịp độ | Để ở màn hình Gameplay |
 | `HUD_SessionCoins` | Khung nền hiển thị số xu nhặt được | |
 

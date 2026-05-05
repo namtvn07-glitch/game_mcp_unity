@@ -15,6 +15,8 @@ namespace MonsterVox.Audio
         private string activeMicrophoneDevice = null;
         private Coroutine recordingTimeoutCoroutine;
 
+        public float MaxRecordTime => audioConfig != null ? audioConfig.maxRecordTime : 2.0f;
+
         private void Start()
         {
             if (audioConfig == null)
@@ -86,7 +88,7 @@ namespace MonsterVox.Audio
 
         private IEnumerator RecordingTimeoutRoutine(float maxTime)
         {
-            yield return new WaitForSeconds(maxTime);
+            yield return new WaitForSecondsRealtime(maxTime);
             // Time is up
             StopRecording();
         }

@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using MonsterVox.Data;
 using MonsterVox.Managers;
 
@@ -30,8 +31,8 @@ namespace MonsterVox.UI
         [SerializeField] private Transform monstersGridParent;
 
         [Header("Slots Tab")]
-        [SerializeField] private Text slotLevelText;
-        [SerializeField] private Text slotCostText;
+        [SerializeField] private TextMeshProUGUI slotLevelText;
+        [SerializeField] private TextMeshProUGUI slotCostText;
         [SerializeField] private Button btnUpgradeSlot;
 
         private StoreTab currentTab = StoreTab.Themes;
@@ -162,8 +163,8 @@ namespace MonsterVox.UI
         private void SetupStoreItem(GameObject item, string itemName, bool isUnlocked, int cost, System.Action onBuy)
         {
             // Find child components by name convention
-            Text nameText = FindChildText(item, "ItemName");
-            Text statusText = FindChildText(item, "ItemStatus");
+            TextMeshProUGUI nameText = FindChildText(item, "ItemName");
+            TextMeshProUGUI statusText = FindChildText(item, "ItemStatus");
             Button buyButton = FindChildButton(item, "BuyButton");
 
             if (nameText != null) nameText.text = itemName;
@@ -197,10 +198,10 @@ namespace MonsterVox.UI
             }
         }
 
-        private Text FindChildText(GameObject parent, string childName)
+        private TextMeshProUGUI FindChildText(GameObject parent, string childName)
         {
             Transform child = parent.transform.Find(childName);
-            return child != null ? child.GetComponent<Text>() : null;
+            return child != null ? child.GetComponent<TextMeshProUGUI>() : null;
         }
 
         private Button FindChildButton(GameObject parent, string childName)

@@ -5,18 +5,21 @@
 ## 1. Core Logic Rules & Flow
 - **Game States:** Game chỉ cần 2 trạng thái chính: `HomeState` và `StageState`.
 - **Luồng dữ liệu thu âm (Microphone):** 
-  - Khi người chơi giữ nút Record (tối đa 2 giây), thiết bị bắt đầu lưu data vào một Audio Buffer.
-  - Khi thả nút, buffer này phải được phân tích: Cắt bỏ khoảng lặng (Trim Silence) ở đầu và cuối.
+  - Khi gán Monster vào Slot, hiển thị `NewAnimalPopupUI`.
+  - Nhấn nút Record trên popup (hoặc đợi đếm ngược tối đa 2s), thiết bị bắt đầu lưu data vào Audio Buffer. Trong quá trình thu âm, BGM sẽ bị tắt (mute).
+  - Khi thả nút hoặc hết thời gian đếm ngược, buffer này phải được phân tích: Cắt bỏ khoảng lặng (Trim Silence) ở đầu và cuối.
   - Sau đó, hệ thống giữ nguyên độ dài AudioClip gốc nhưng áp dụng **Silence Padding (Chèn khoảng lặng)** theo các mốc Grid (VD: 500ms) để tự động lặp lại đúng vào nhịp gốc (Xem chi tiết thuật toán tại `technical-spec.md`). Không sử dụng Time-Stretch để tránh làm biến dạng âm thanh.
 - **Luồng phát nhạc (Zero Latency Sync):**
   - Nhạc nền (BGM) loop liên tục.
   - Mọi AudioClip từ Monster (khi hát) PHẢI được lên lịch phát bằng hệ thống Audio DSP time để đảm bảo beat-snapping chính xác 100%. Nếu một Monster được thả bong bóng giữa nhịp, nó sẽ đợi đến vạch nhịp (beat) tiếp theo để bắt đầu phát, tuyệt đối không được lệch nhịp.
 
 ## 2. Input Definitions
-- **Nút Record (Hold):** Cần nhận diện sự kiện `PointerDown` và `PointerUp`.
-- **Drag & Drop (Bong bóng âm thanh):**
-  - Kéo bong bóng sinh ra từ nút Record.
-  - Phát hiện Drop: Raycast 2D vào khu vực màn hình. Nếu thả trúng Collider của một Slot/Monster đang trống (hoặc thay thế con cũ), gán AudioClip cho Monster đó.
+- **Drag & Drop (Monster từ danh sách):**
+  - Cuộn dọc danh sách các Monster bên trái.
+  - Kéo (Drag) Monster đã mở khóa và thả (Drop) vào các placeholder/slots trên sân khấu.
+  - Nếu thả thành công (hoặc đè lên Monster cũ đang hát), hệ thống mở `NewAnimalPopupUI`.
+- **NewAnimalPopupUI Input:**
+  - Nút Record, Play, Try Again, Confirm. Đếm ngược thời gian ghi âm tự động dừng khi hết thời gian giới hạn.
 - **Thu thập tiền (Tap):**
   - Raycast 2D vào các Object Tiền đang rớt để thu thập.
 

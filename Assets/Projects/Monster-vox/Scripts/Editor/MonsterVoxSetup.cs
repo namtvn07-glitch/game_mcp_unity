@@ -6,6 +6,7 @@ using MonsterVox.UI;
 using MonsterVox.Managers;
 using MonsterVox.Gameplay;
 using UnityEngine.UI;
+using TMPro;
 using UnityEditor.SceneManagement;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
@@ -189,7 +190,7 @@ namespace MonsterVox.Editor
             var uiMgr = canvasGO.AddComponent<UIManager>();
 
             // Theme Name
-            GameObject themeNameGO = CreateText(menuPanel.transform, "ThemeName", "Spooky Room", 28, TextAnchor.MiddleCenter);
+            GameObject themeNameGO = CreateText(menuPanel.transform, "ThemeName", "Spooky Room", 28, TextAlignmentOptions.Center);
             RectTransform tnRT = themeNameGO.GetComponent<RectTransform>();
             tnRT.anchorMin = new Vector2(0.1f, 0.55f); tnRT.anchorMax = new Vector2(0.9f, 0.65f);
             tnRT.offsetMin = Vector2.zero; tnRT.offsetMax = Vector2.zero;
@@ -204,13 +205,13 @@ namespace MonsterVox.Editor
             pvRT.offsetMin = Vector2.zero; pvRT.offsetMax = Vector2.zero;
 
             // Lock overlay
-            GameObject lockGO = CreateText(menuPanel.transform, "LockOverlay", "🔒", 40, TextAnchor.MiddleCenter);
+            GameObject lockGO = CreateText(menuPanel.transform, "LockOverlay", "🔒", 40, TextAlignmentOptions.Center);
             RectTransform lkRT = lockGO.GetComponent<RectTransform>();
             lkRT.anchorMin = new Vector2(0.15f, 0.35f); lkRT.anchorMax = new Vector2(0.85f, 0.55f);
             lkRT.offsetMin = Vector2.zero; lkRT.offsetMax = Vector2.zero;
 
             // Status text
-            GameObject statusGO = CreateText(menuPanel.transform, "ThemeStatus", "UNLOCKED", 18, TextAnchor.MiddleCenter);
+            GameObject statusGO = CreateText(menuPanel.transform, "ThemeStatus", "UNLOCKED", 18, TextAlignmentOptions.Center);
             RectTransform stRT = statusGO.GetComponent<RectTransform>();
             stRT.anchorMin = new Vector2(0.2f, 0.30f); stRT.anchorMax = new Vector2(0.8f, 0.35f);
             stRT.offsetMin = Vector2.zero; stRT.offsetMax = Vector2.zero;
@@ -224,13 +225,13 @@ namespace MonsterVox.Editor
             btnUnlock.GetComponent<Image>().color = new Color(0.9f, 0.6f, 0.1f);
 
             // Coin HUD (Home)
-            GameObject coinHudHome = CreateText(menuPanel.transform, "CoinDisplay", "0", 22, TextAnchor.MiddleLeft);
+            GameObject coinHudHome = CreateText(menuPanel.transform, "CoinDisplay", "0", 22, TextAlignmentOptions.Left);
             RectTransform chRT = coinHudHome.GetComponent<RectTransform>();
             chRT.anchorMin = new Vector2(0.05f, 0.90f); chRT.anchorMax = new Vector2(0.4f, 0.96f);
             chRT.offsetMin = Vector2.zero; chRT.offsetMax = Vector2.zero;
             var homeCoinHUD = coinHudHome.AddComponent<HUDCoinDisplay>();
             var homeCoinSO = new SerializedObject(homeCoinHUD);
-            homeCoinSO.FindProperty("coinText").objectReferenceValue = coinHudHome.GetComponent<Text>();
+            homeCoinSO.FindProperty("coinText").objectReferenceValue = coinHudHome.GetComponent<TextMeshProUGUI>();
             homeCoinSO.FindProperty("showSessionCoins").boolValue = false;
             homeCoinSO.ApplyModifiedProperties();
 
@@ -242,8 +243,8 @@ namespace MonsterVox.Editor
             var carousel = menuPanel.AddComponent<ThemeCarouselUI>();
             var carSO = new SerializedObject(carousel);
             carSO.FindProperty("themePreviewImage").objectReferenceValue = previewImg;
-            carSO.FindProperty("themeNameText").objectReferenceValue = themeNameGO.GetComponent<Text>();
-            carSO.FindProperty("themeStatusText").objectReferenceValue = statusGO.GetComponent<Text>();
+            carSO.FindProperty("themeNameText").objectReferenceValue = themeNameGO.GetComponent<TextMeshProUGUI>();
+            carSO.FindProperty("themeStatusText").objectReferenceValue = statusGO.GetComponent<TextMeshProUGUI>();
             carSO.FindProperty("btnPrevious").objectReferenceValue = btnPrev.GetComponent<Button>();
             carSO.FindProperty("btnNext").objectReferenceValue = btnNext.GetComponent<Button>();
             carSO.FindProperty("btnPlay").objectReferenceValue = btnPlay.GetComponent<Button>();
@@ -258,35 +259,17 @@ namespace MonsterVox.Editor
 
             GameObject btnBack = CreateButton(stagePanel.transform, "BtnBack", "< BACK", 0.02f, 0.92f, 0.25f, 0.98f);
             
-            GameObject sessionCoinGO = CreateText(stagePanel.transform, "SessionCoins", "0", 22, TextAnchor.MiddleRight);
+            GameObject sessionCoinGO = CreateText(stagePanel.transform, "SessionCoins", "0", 22, TextAlignmentOptions.Right);
             RectTransform scRT = sessionCoinGO.GetComponent<RectTransform>();
             scRT.anchorMin = new Vector2(0.6f, 0.92f); scRT.anchorMax = new Vector2(0.95f, 0.98f);
             scRT.offsetMin = Vector2.zero; scRT.offsetMax = Vector2.zero;
             var stageCoinHUD = sessionCoinGO.AddComponent<HUDCoinDisplay>();
             var stageCoinSO = new SerializedObject(stageCoinHUD);
-            stageCoinSO.FindProperty("coinText").objectReferenceValue = sessionCoinGO.GetComponent<Text>();
+            stageCoinSO.FindProperty("coinText").objectReferenceValue = sessionCoinGO.GetComponent<TextMeshProUGUI>();
             stageCoinSO.FindProperty("showSessionCoins").boolValue = true;
             stageCoinSO.ApplyModifiedProperties();
 
-            // Record Button
-            GameObject recBtnGO = CreateButton(stagePanel.transform, "BtnRecord", "● REC", 0.3f, 0.02f, 0.7f, 0.12f);
-            recBtnGO.GetComponent<Image>().color = new Color(0.9f, 0.15f, 0.2f);
-            var recBtn = recBtnGO.AddComponent<RecordButtonUI>();
-            var recBtnSO = new SerializedObject(recBtn);
-            recBtnSO.FindProperty("microphoneRecorder").objectReferenceValue = recorder;
-            recBtnSO.FindProperty("buttonImage").objectReferenceValue = recBtnGO.GetComponent<Image>();
-            recBtnSO.FindProperty("bubbleSpawnParent").objectReferenceValue = stagePanel.transform;
-            recBtnSO.ApplyModifiedProperties();
-
-            // Create VoiceClipUI prefab for bubble spawning
-            string bubblePrefabPath = $"{rootPath}/Prefabs/VoiceClipUI.prefab";
-            GameObject bubblePrefab = AssetDatabase.LoadAssetAtPath<GameObject>(bubblePrefabPath);
-            if (bubblePrefab != null)
-            {
-                var recBtnSO2 = new SerializedObject(recBtn);
-                recBtnSO2.FindProperty("soundBubblePrefab").objectReferenceValue = bubblePrefab;
-                recBtnSO2.ApplyModifiedProperties();
-            }
+            // Record button was removed in favor of NewAnimalPopupUI
 
             // -- Popup_Store (minimal placeholder) --
             GameObject storePopup = CreatePanel(canvasGO.transform, "Popup_Store");
@@ -304,12 +287,10 @@ namespace MonsterVox.Editor
             uiSO.FindProperty("panelStage").objectReferenceValue = stagePanel;
             uiSO.FindProperty("popupStore").objectReferenceValue = storePopup;
             uiSO.FindProperty("popupSettings").objectReferenceValue = settingsPopup;
+            uiSO.FindProperty("btnBack").objectReferenceValue = btnBack.GetComponent<Button>();
+            uiSO.FindProperty("btnStore").objectReferenceValue = btnStore.GetComponent<Button>();
+            uiSO.FindProperty("btnSettings").objectReferenceValue = btnSettings.GetComponent<Button>();
             uiSO.ApplyModifiedProperties();
-
-            // Wire button callbacks
-            btnBack.GetComponent<Button>().onClick.AddListener(() => uiMgr.GoBackToHome());
-            btnStore.GetComponent<Button>().onClick.AddListener(() => uiMgr.OpenStore());
-            btnSettings.GetComponent<Button>().onClick.AddListener(() => uiMgr.OpenSettings());
 
             // Save
             string scenePath = $"{rootPath}/Scenes/MonsterVox_Main.unity";
@@ -430,12 +411,11 @@ namespace MonsterVox.Editor
 
             GameObject textGO = new GameObject("Label");
             textGO.transform.SetParent(go.transform, false);
-            Text txt = textGO.AddComponent<Text>();
+            TextMeshProUGUI txt = textGO.AddComponent<TextMeshProUGUI>();
             txt.text = label;
-            txt.alignment = TextAnchor.MiddleCenter;
+            txt.alignment = TextAlignmentOptions.Center;
             txt.color = Color.white;
             txt.fontSize = 24;
-            txt.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
             RectTransform trt = textGO.GetComponent<RectTransform>();
             trt.anchorMin = Vector2.zero; trt.anchorMax = Vector2.one;
             trt.offsetMin = Vector2.zero; trt.offsetMax = Vector2.zero;
@@ -443,17 +423,16 @@ namespace MonsterVox.Editor
             return go;
         }
 
-        private static GameObject CreateText(Transform parent, string name, string content, int size, TextAnchor align)
+        private static GameObject CreateText(Transform parent, string name, string content, int size, TextAlignmentOptions align)
         {
             GameObject go = new GameObject(name);
             go.transform.SetParent(parent, false);
             go.AddComponent<RectTransform>();
-            Text txt = go.AddComponent<Text>();
+            TextMeshProUGUI txt = go.AddComponent<TextMeshProUGUI>();
             txt.text = content;
             txt.fontSize = size;
             txt.alignment = align;
             txt.color = Color.white;
-            txt.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
             return go;
         }
     }
