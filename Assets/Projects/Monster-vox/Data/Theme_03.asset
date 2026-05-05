@@ -17,6 +17,7 @@ MonoBehaviour:
   bgmClip: {fileID: 0}
   backgroundSprite: {fileID: 21300000, guid: 31a9e2ca4ff015a4a90d467577aba795, type: 3}
   themePrefab: {fileID: 5405336943161567379, guid: eef5ce24d67686c42b2f4d51ebe35706, type: 3}
+  slotPlaceholderSprite: {fileID: 21300000, guid: 8b707b689d5cd0340b075291798e4a82, type: 3}
   bpm: 130
   unlockCostCoins: 800
   unlockCostAds: 3

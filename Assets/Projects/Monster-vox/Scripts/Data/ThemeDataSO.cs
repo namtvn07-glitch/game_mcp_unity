@@ -13,6 +13,7 @@ namespace MonsterVox.Data
         [SerializeField] private AudioClip bgmClip;
         [SerializeField] private Sprite backgroundSprite;
         [SerializeField] private GameObject themePrefab;
+        [SerializeField] private Sprite slotPlaceholderSprite;
 
         [Header("Audio")]
         [SerializeField] private float bpm = 120f;
@@ -24,6 +25,7 @@ namespace MonsterVox.Data
         public string ThemeID => themeID;
         public string ThemeName => themeName;
         public AudioClip BgmClip => bgmClip;
+        public Sprite SlotPlaceholderSprite => slotPlaceholderSprite;
         public Sprite BackgroundSprite => backgroundSprite;
         public GameObject ThemePrefab => themePrefab;
         public float BPM => bpm;

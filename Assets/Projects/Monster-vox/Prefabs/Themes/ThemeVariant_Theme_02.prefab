@@ -24,9 +24,25 @@ PrefabInstance:
       propertyPath: m_WasSpriteAssigned
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1209096062595446969, guid: 08dd356b29cb22b40bb16fa4b69c6486, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -2.34
+      objectReference: {fileID: 0}
+    - target: {fileID: 1209096062595446969, guid: 08dd356b29cb22b40bb16fa4b69c6486, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -3.69
+      objectReference: {fileID: 0}
     - target: {fileID: 4545826737584233518, guid: 08dd356b29cb22b40bb16fa4b69c6486, type: 3}
       propertyPath: m_Name
       value: ThemeVariant_Theme_02
+      objectReference: {fileID: 0}
+    - target: {fileID: 6137526298012878058, guid: 08dd356b29cb22b40bb16fa4b69c6486, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.67
+      objectReference: {fileID: 0}
+    - target: {fileID: 6137526298012878058, guid: 08dd356b29cb22b40bb16fa4b69c6486, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.33
       objectReference: {fileID: 0}
     - target: {fileID: 6498525935724233168, guid: 08dd356b29cb22b40bb16fa4b69c6486, type: 3}
       propertyPath: m_LocalPosition.x
@@ -67,6 +83,14 @@ PrefabInstance:
     - target: {fileID: 6498525935724233168, guid: 08dd356b29cb22b40bb16fa4b69c6486, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8693394552193834260, guid: 08dd356b29cb22b40bb16fa4b69c6486, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 8693394552193834260, guid: 08dd356b29cb22b40bb16fa4b69c6486, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.29
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

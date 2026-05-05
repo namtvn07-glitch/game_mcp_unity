@@ -16,6 +16,7 @@ namespace MonsterVox.Gameplay
         [SerializeField] private MonsterVox.Data.AudioConfigSO audioConfig;
 
         private ThemeController currentThemeInstance;
+        private SlotController[] stageSlots;
         private MonsterController[] activeMonsters;
         private System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<MonsterController>> monsterPools = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<MonsterController>>();
         private ThemeDataSO currentTheme;
@@ -133,6 +134,7 @@ namespace MonsterVox.Gameplay
 
             // Cleanup monsters and theme
             ClearMonsters();
+            stageSlots = null;
             if (currentThemeInstance != null)
             {
                 Destroy(currentThemeInstance.gameObject);
@@ -151,36 +153,71 @@ namespace MonsterVox.Gameplay
             }
 
             activeMonsters = new MonsterController[maxSlots];
-
-            // For MVP, place placeholder monsters in all slots using default Mon_01 data
-            var catalog = GameDataCatalog.Instance;
-            MonsterDataSO defaultMonster = catalog != null ? catalog.GetMonster("Mon_01") : null;
+            stageSlots = new SlotController[maxSlots];
 
             for (int i = 0; i < maxSlots; i++)
             {
-                Vector3 pos = Vector3.zero;
+                Transform slotTransform = null;
+                Vector3 pos = new Vector3(i * 2.5f, -1f, 0f); // Default fallback
+
                 if (currentThemeInstance != null && currentThemeInstance.SlotTransforms != null && i < currentThemeInstance.SlotTransforms.Count && currentThemeInstance.SlotTransforms[i] != null)
                 {
-                    pos = currentThemeInstance.SlotTransforms[i].position;
+                    slotTransform = currentThemeInstance.SlotTransforms[i];
+                    pos = slotTransform.position;
                 }
                 else
                 {
-                    // Fallback if slot transforms are not fully assigned
-                    pos = new Vector3(i * 2.5f, -1f, 0f);
+                    // Fallback
+                    GameObject fallbackSlot = new GameObject($"Slot_Fallback_{i}");
+                    fallbackSlot.transform.SetParent(transform);
+                    fallbackSlot.transform.position = pos;
+                    slotTransform = fallbackSlot.transform;
                 }
 
-                MonsterController controller = GetOrCreateMonster(defaultMonster);
-                if (controller != null)
+                // Add or get SlotController
+                SlotController slotCtrl = slotTransform.GetComponent<SlotController>();
+                if (slotCtrl == null)
                 {
-                    controller.transform.position = pos;
-
-                    if (defaultMonster != null)
-                    {
-                        controller.Setup(defaultMonster);
-                    }
-                    activeMonsters[i] = controller;
+                    slotCtrl = slotTransform.gameObject.AddComponent<SlotController>();
                 }
+                
+                // Initialize placeholder visual
+                Sprite placeholderSprite = currentTheme != null ? currentTheme.SlotPlaceholderSprite : null;
+                slotCtrl.SetupPlaceholder(placeholderSprite);
+                slotCtrl.ClearSlot(); // Ensure it starts empty
+                stageSlots[i] = slotCtrl;
             }
+        }
+
+        /// <summary>
+        /// Called by Drag and Drop UI. Returns true if assigned successfully.
+        /// </summary>
+        public bool TryAssignMonsterToSlot(MonsterDataSO monsterData, SlotController targetSlot)
+        {
+            if (monsterData == null || targetSlot == null || !isActive) return false;
+
+            // Find index of the slot
+            int slotIndex = System.Array.IndexOf(stageSlots, targetSlot);
+            if (slotIndex < 0) return false;
+
+            // If there's already a monster, deactivate it to pool
+            if (activeMonsters[slotIndex] != null)
+            {
+                activeMonsters[slotIndex].gameObject.SetActive(false);
+                activeMonsters[slotIndex] = null;
+            }
+
+            // Spawn or get new monster from pool
+            MonsterController controller = GetOrCreateMonster(monsterData);
+            if (controller != null)
+            {
+                controller.Setup(monsterData);
+                targetSlot.AssignMonster(controller);
+                activeMonsters[slotIndex] = controller;
+                return true;
+            }
+
+            return false;
         }
 
         private MonsterController GetOrCreateMonster(MonsterDataSO monsterData)
