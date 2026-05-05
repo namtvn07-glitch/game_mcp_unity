@@ -205,6 +205,7 @@ namespace MonsterVox.Gameplay
             // If there's already a monster, deactivate it to pool
             if (activeMonsters[slotIndex] != null)
             {
+                activeMonsters[slotIndex].OnLoopCompleted -= HandleMonsterLoopCompleted;
                 activeMonsters[slotIndex].gameObject.SetActive(false);
                 activeMonsters[slotIndex] = null;
             }
@@ -213,6 +214,9 @@ namespace MonsterVox.Gameplay
             MonsterController controller = GetOrCreateMonster(monsterData);
             if (controller != null)
             {
+                controller.OnLoopCompleted -= HandleMonsterLoopCompleted; // Unsubscribe to prevent duplicates
+                controller.OnLoopCompleted += HandleMonsterLoopCompleted;
+
                 controller.Setup(monsterData);
                 targetSlot.AssignMonster(controller);
                 activeMonsters[slotIndex] = controller;
@@ -285,64 +289,37 @@ namespace MonsterVox.Gameplay
             {
                 if (activeMonsters[i] != null)
                 {
+                    activeMonsters[i].OnLoopCompleted -= HandleMonsterLoopCompleted;
                     activeMonsters[i].gameObject.SetActive(false);
                 }
             }
             activeMonsters = null;
         }
 
-        private void Update()
+        private void HandleMonsterLoopCompleted(MonsterController monster)
         {
-            if (!isActive || bgmSource == null || bgmLoopDuration <= 0) return;
-
-            // Track BGM loop completion using dspTime for precision
-            double elapsed = AudioSettings.dspTime - bgmLoopStartDspTime;
-            if (elapsed >= bgmLoopDuration)
+            if (monster != null && monster.IsSinging && coinSpawner != null)
             {
-                bgmLoopStartDspTime += bgmLoopDuration;
-                OnBgmLoopCompleted();
-            }
-        }
-
-        private void OnBgmLoopCompleted()
-        {
-            if (activeMonsters == null || coinSpawner == null) return;
-
-            int singingCount = 0;
-            for (int i = 0; i < activeMonsters.Length; i++)
-            {
-                if (activeMonsters[i] != null && activeMonsters[i].IsSinging)
+                Debug.Log($"[StageManager] Monster {monster.name} finished loop. Spawning 1 visual coin.");
+                
+                // Spawn 1 visual coin exactly at this monster's position
+                coinSpawner.SpawnCoins(1, new Vector3[] { monster.transform.position });
+                
+                // Auto-collect instantly so UI updates immediately
+                if (EconomyManager.Instance != null)
                 {
-                    singingCount++;
+                    Debug.Log($"[StageManager] Adding 1 coin to EconomyManager. Current total: {EconomyManager.Instance.Data.totalCoins}");
+                    EconomyManager.Instance.AddCoins(1);
+                }
+                else
+                {
+                    Debug.LogWarning("[StageManager] EconomyManager.Instance is NULL! Cannot add coins.");
                 }
             }
-
-            if (singingCount > 0)
+            else
             {
-                // Formula from Game_Data: X = singingCount * Base_Drop (1)
-                coinSpawner.SpawnCoins(singingCount, GetSingingMonsterPositions());
+                Debug.LogWarning($"[StageManager] HandleMonsterLoopCompleted failed. Monster: {monster != null}, IsSinging: {(monster != null ? monster.IsSinging : false)}, CoinSpawner: {coinSpawner != null}");
             }
-        }
-
-        private Vector3[] GetSingingMonsterPositions()
-        {
-            int count = 0;
-            for (int i = 0; i < activeMonsters.Length; i++)
-            {
-                if (activeMonsters[i] != null && activeMonsters[i].IsSinging)
-                    count++;
-            }
-
-            Vector3[] positions = new Vector3[count];
-            int idx = 0;
-            for (int i = 0; i < activeMonsters.Length; i++)
-            {
-                if (activeMonsters[i] != null && activeMonsters[i].IsSinging)
-                {
-                    positions[idx++] = activeMonsters[i].transform.position;
-                }
-            }
-            return positions;
         }
 
         // FitBackgroundToScreen moved to ThemeController

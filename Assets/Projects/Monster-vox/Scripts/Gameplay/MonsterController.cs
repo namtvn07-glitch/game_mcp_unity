@@ -32,7 +32,7 @@ namespace MonsterVox.Gameplay
         /// Fired each time the monster's audio completes one loop cycle.
         /// StageManager subscribes to this for coin drop timing.
         /// </summary>
-        public event System.Action OnLoopCompleted;
+        public event System.Action<MonsterController> OnLoopCompleted;
 
         private void Awake()
         {
@@ -107,7 +107,7 @@ namespace MonsterVox.Gameplay
 
         private void HandleLoopCompleted()
         {
-            OnLoopCompleted?.Invoke();
+            OnLoopCompleted?.Invoke(this);
         }
 
         private void StopSinging()

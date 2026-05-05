@@ -12,14 +12,30 @@ namespace MonsterVox.UI
     public class HUDCoinDisplay : MonoBehaviour
     {
         [SerializeField] private TextMeshProUGUI coinText;
-        [SerializeField] private bool showSessionCoins;
 
         private void OnEnable()
         {
             if (EconomyManager.Instance != null)
             {
+                EconomyManager.Instance.OnCoinsChanged -= HandleCoinsChanged; // Prevent double sub
                 EconomyManager.Instance.OnCoinsChanged += HandleCoinsChanged;
                 RefreshDisplay();
+            }
+        }
+
+        private void Start()
+        {
+            // Fallback: If OnEnable ran before EconomyManager Awake, Instance was null.
+            // Start runs after all Awakes.
+            if (EconomyManager.Instance != null)
+            {
+                EconomyManager.Instance.OnCoinsChanged -= HandleCoinsChanged;
+                EconomyManager.Instance.OnCoinsChanged += HandleCoinsChanged;
+                RefreshDisplay();
+            }
+            else
+            {
+                Debug.LogWarning("[HUDCoinDisplay] EconomyManager.Instance is still NULL in Start!");
             }
         }
 
@@ -33,6 +49,7 @@ namespace MonsterVox.UI
 
         private void HandleCoinsChanged(int totalCoins)
         {
+            Debug.Log($"[HUDCoinDisplay] Coins changed to {totalCoins}. Updating UI.");
             RefreshDisplay();
         }
 
@@ -40,9 +57,7 @@ namespace MonsterVox.UI
         {
             if (coinText == null || EconomyManager.Instance == null) return;
 
-            int value = showSessionCoins
-                ? EconomyManager.Instance.SessionCoins
-                : EconomyManager.Instance.Data.totalCoins;
+            int value = EconomyManager.Instance.Data.totalCoins;
 
             coinText.text = value.ToString();
         }

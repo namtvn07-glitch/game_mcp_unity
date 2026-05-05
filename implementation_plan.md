@@ -1,36 +1,39 @@
-# Sequentially Generate Remaining Monster-vox Assets
+# Monster Coin Generation Logic
 
-Dự án Monster-vox yêu cầu một số lượng lớn các asset (19 Monsters còn lại, 11 Backgrounds, 10 Props, 12 UI Elements, 4 VFX Textures). Dựa trên yêu cầu của bạn, chúng ta sẽ tiến hành tạo **lần lượt** (sequentially) từng asset một.
+The objective is to implement the coin generation logic for each singing monster. Currently, `StageManager` attempts to spawn coins based on the Background Music (BGM) loop duration. However, this causes issues if the BGM is missing or out of sync, and it violates the design intent where each monster's own singing loop should dictate its coin generation (as hinted by the `OnLoopCompleted` event in `MonsterController`).
+
+We will refactor this so that **each monster generates coins independently** when it finishes its own singing loop.
 
 ## User Review Required
+> [!IMPORTANT]
+> **Change in Timing**: Coins will now drop precisely when a monster finishes its own audio loop, rather than waiting for the global BGM loop to finish. This makes coin generation robust even if a Theme lacks BGM.
+> **Optional Enhancement**: Should we add a `coinDropAmount` field to `MonsterDataSO` so rarer monsters drop more coins? (The current plan uses a base drop of 1 coin per loop as defined in the GDD, but we can easily add this field).
 
-> [!WARNING]
-> Theo đúng workflow `game-art-orchestrator`, mỗi một asset đều bắt buộc phải trải qua **2 vòng duyệt (Human-In-The-Loop)**:
-> 1. Duyệt bản phác thảo (Sketch & Silhouette)
-> 2. Duyệt bản đổ màu (Flat Colors, Shading) và xuất file (Export)
-> 
-> Việc tạo toàn bộ danh sách trong một lần chat là không khả thi và vi phạm nguyên tắc kiểm soát chất lượng. Do đó, tôi đề xuất chúng ta sẽ đi theo trình tự: **Giải quyết dứt điểm từng Monster một, sau đó mới chuyển sang loại asset khác.**
+## Proposed Changes
 
-## Proposed Execution Plan
+### Data Layer
+*(No immediate changes required unless we want to add `CoinDropAmount` to `MonsterDataSO`. We will stick to the default 1 coin for now).*
 
-Chúng ta sẽ ưu tiên hoàn thành danh sách **Character (Monsters)** trước (vì chúng là trung tâm của game), sau đó là Environment, UI, và VFX.
+### Core Logic Layer
+#### [MODIFY] `StageManager.cs`
+- Subscribe to `MonsterController.OnLoopCompleted` when assigning a monster to a slot.
+- Unsubscribe when clearing monsters or deactivating the stage.
+- Create a new method `HandleMonsterLoopCompleted(MonsterController monster)` that spawns a coin directly at that monster's position.
+- Remove the old `OnBgmLoopCompleted` BGM-based coin logic in `Update()` to prevent double-spawning and decouple the economy from the BGM.
 
-### Danh sách các Monster cần thực hiện (Phase 1)
-- `Mon_02`: Chipmunk Ghost (Bóng ma nhỏ xíu)
-- `Mon_03`: Robo Bat (Dơi cơ khí)
-- `Mon_04`: Deep Blob (Cục nhầy khổng lồ)
-- `Mon_05`: Echo Skeleton (Bộ xương gõ nhịp)
-- `Mon_06`: Alien Soprano (Người ngoài hành tinh cổ dài)
-- `Mon_07`: Glitch Demon (Ác quỷ bị lỗi hình ảnh nhiễu sóng)
-- `Mon_08`: Chorus Mummy (Xác ướp quấn băng)
-- `Mon_09`: Reverb Zombie (Zombie há mồm to)
-- `Mon_10`: Auto-Tune Orc (Orc cầm mic vàng)
-- `Mon_11` đến `Mon_20`: ... (Sẽ thực hiện tuần tự)
+### Gameplay/UI Layer
+#### [MODIFY] `MonsterController.cs`
+- Pass a reference of itself when firing the loop event, so `StageManager` knows exactly which monster completed its loop and where to spawn the coin.
+- Update the event signature: `public event System.Action<MonsterController> OnLoopCompleted;`
+- Update `HandleLoopCompleted` to invoke with `this`.
 
 ## Verification Plan
+### Automated Tests
+- None required for this specific logic change.
 
-### Thủ tục trên mỗi Asset
-1. Tôi tạo phác thảo line-art -> Bạn duyệt.
-2. Tôi tạo bản màu dựa trên line-art -> Bạn duyệt.
-3. Tôi tự động export vào thư mục dự án và log vào `Generated_Asset_Catalog.md`.
-4. Chúng ta lặp lại chu kỳ cho Asset tiếp theo.
+### Manual Verification
+- Step 1: Enter Play Mode.
+- Step 2: Drag and drop a monster onto a slot.
+- Step 3: Wait for the monster's audio to complete one loop.
+- Step 4: Verify that exactly 1 coin spawns from the monster's position, even if the Theme's BGM is muted or missing.
+- Step 5: Collect the coin and verify the economy balance increases.

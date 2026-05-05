@@ -36,10 +36,8 @@ namespace MonsterVox.Gameplay
 
         private void Collect()
         {
-            if (EconomyManager.Instance != null)
-            {
-                EconomyManager.Instance.AddCoins(1);
-            }
+            // Money is already added instantly when spawned. 
+            // Tapping just cleans up the visual coin early.
             ReturnToPool();
         }
 

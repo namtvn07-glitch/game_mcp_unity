@@ -176,12 +176,8 @@ namespace MonsterVox.UI
                 // Apply name
                 currentMonster.gameObject.name = string.IsNullOrEmpty(inputName.text) ? currentData.MonsterName : inputName.text;
 
-                // Apply clip
-                var qap = currentMonster.GetComponent<QuantizedAudioPlayer>();
-                if (qap != null)
-                {
-                    qap.ReceiveNewClip(recordedClip);
-                }
+                // Apply clip correctly through MonsterController to ensure IsSinging state is set
+                currentMonster.ReceiveClip(recordedClip);
             }
 
             gameObject.SetActive(false);
