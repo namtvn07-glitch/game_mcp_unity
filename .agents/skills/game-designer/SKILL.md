@@ -41,4 +41,4 @@ You must read the specific instructions for each phase from the local `subskills
 ### 6. Phase 6: Project Hub & Technical Spec (AUTONOMOUS)
 - **Action:** Read instructions from `subskills/6_project_synthesis.md`.
 - **Execution:** Create `[ProjectName]_Project_Hub.md` and `technical-spec.md`. The Hub acts as the central coordinator and directory for all departments, while the Technical Spec details the architecture, systems, and logic for the dev team.
-- **Completion:** Once this is generated, announce that the pipeline has concluded successfully.
+- **Completion & Integration:** Once generated, you MUST instruct the user to run `/commit` to save all GDD files to version control. Finally, trigger the `/finish` workflow to extract game design patterns and learnings into the project's knowledge base.

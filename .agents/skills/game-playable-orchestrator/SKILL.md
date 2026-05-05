@@ -36,3 +36,7 @@ You must read the specific sub-guide for your current phase before taking any ac
    - Increment the phase number (e.g., from 1 to 2).
    - Write the new phase number back to `.studio_state`.
    - Read the corresponding `.md` sub-guide for the new phase using `view_file`, and execute its instructions exactly.
+
+## Integration with Global Workflows
+- **Debugging**: During Phase 3 (Dev), if HTML5/Phaser rendering errors or JavaScript bugs occur, you MUST explicitly trigger the `/debug` workflow to troubleshoot systematically.
+- **Completion**: At the end of Phase 4 (Package), when the monolithic HTML file is ready, you MUST trigger the `/finish` workflow to extract optimization techniques, and remind the user to `/commit`.

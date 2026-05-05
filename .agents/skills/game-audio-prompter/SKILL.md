@@ -57,5 +57,6 @@ The generated file MUST strictly follow the structural template below.
 - **Audio Texture Prompt:** "[Attack/Decay envelope], [Reverb level], [Timbre/Pitch]. [Fatigue constraints if high-frequency]."
 ```
 
-### Phase 4: Finalize
+### Phase 4: Finalize & Integration
 Once the file is generated, review it structurally. Provide the user with a clickable link to the generated document and ask if they need assistance executing the generated prompts via other tools or APIs.
+- **Workflow Hook:** Finally, trigger the `/finish` workflow to log successful audio prompting keywords and formatting techniques into the project's learned documentation.

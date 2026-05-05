@@ -37,14 +37,15 @@ Based on the diff analysis, generate a commit message following **Conventional C
 - `test`: Adding/updating tests
 
 **Scope detection rules:**
-- Files in `source/ads-lib/src/.../fa/` → scope: `meta`
-- Files in `source/ads-lib/src/.../tiktok/` → scope: `tiktok`
-- Files in `source/ads-lib/src/.../adjust/` → scope: `adjust`
-- Files in `source/ads-lib/src/.../applovin/` → scope: `applovin`
-- Files in `source/ads-lib/src/com/admob/tool/` → scope: `admob`
-- Files in `source/ads-lib/run/web/` → scope: `ui`
-- Files in `docs/` → scope: `docs`
+- Files in `Assets/Scripts/` → scope: `scripts`
+- Files in `Assets/Art/` → scope: `art`
+- Files in `Assets/Audio/` → scope: `audio`
+- Files in `Assets/Prefabs/` → scope: `prefabs`
+- Files in `Assets/Scenes/` → scope: `scenes`
+- Files in `Assets/ScriptableObjects/` → scope: `data`
+- Files in `Assets/Plugins/` → scope: `plugins`
 - Files in `.agents/` → scope: `workflow`
+- Files in `Docs/` → scope: `docs`
 - Mixed modules → scope: most-changed module, mention others in body
 
 **Guidelines:**

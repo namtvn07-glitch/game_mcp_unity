@@ -63,6 +63,7 @@ This skill acts as a robust Data Ingestion Pipeline for your game artist workflo
   }
   ```
 
-### 5. Acknowledge Target
+### 5. Acknowledge Target & Finish
 - Present the updated section explicitly to the user to confirm that the changes were securely registered.
-- Remind the user that these global rules will now forcefully apply to the next `game-art-orchestrator-v2` execution.
+- Remind the user that these global rules will now forcefully apply to the next `game-art-orchestrator` execution.
+- **Integration:** Automatically run the `/finish` workflow to document any data ingestion gotchas or conflicts identified during the compilation process.

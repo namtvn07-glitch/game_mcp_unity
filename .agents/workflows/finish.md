@@ -61,15 +61,14 @@ What type of learning is this?
 │
 ├─► Common code pattern / Convention / Gotcha?
 │   └─► ✅ `.agents/rules/GEMINI.md` (Section: Critical Rules or Learned Patterns)
-│       Example: "Always use MERGE for upsert", "Bulk delete needs batch size 10"
+│       Example: "Always use SerializeField instead of public", "Unsubscribe events in OnDisable"
 │
 ├─► Deep technique for a specific stack?
 │   └─► ✅ docs/learned/[stack].md
-│       Example: "ClickHouse sum()/sum() for weighted avg", "JSP model caching"
+│       Example: "Unity Object Pooling setup", "Addressables loading pattern"
 │
 ├─► Improvement to PLANNING or WORKFLOW processes?
 │   └─► ✅ .agents/workflows/*.md — **⚠️ MUST ask user approval before modifying workflow!**
-│       Example: "Check API rate limit before planning bulk operations"
 │
 ├─► Debugging insight (root cause analysis, non-obvious bug)?
 │   └─► ✅ docs/learned/ (relevant stack file, add "Gotchas" section)
@@ -123,7 +122,7 @@ Create `walkthrough.md` in brain/ to document results:
 | path/to/file | MODIFY | What changed |
 
 ## What Was Tested
-- [ ] Compile: `cd source/ads-lib && ./gradlew compileJava`
+- [ ] Compile: Verify no errors in Unity Editor Console
 - [ ] Manual verification: [steps]
 
 ## Validation Results

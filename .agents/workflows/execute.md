@@ -45,35 +45,33 @@ Verify the task is ready to execute:
 
 ### 3.1 Read plan from "Proposed Changes" in implementation_plan.md:
 // turbo
-- Database Schema changes
-- Java Layer changes
-- UI Layer (.dic files) changes
+- Data Layer (ScriptableObjects, Models)
+- Core Logic Layer (Managers, Controllers)
+- Gameplay/UI Layer (MonoBehaviours, Views)
 
 ### 3.2 Execute in order:
 // turbo
 ```
-1. Database changes (if any)
+1. Data Layer (Define data structures, ScriptableObjects)
    ↓
-2. Java Layer (models → repos → services → gather threads)
+2. Core Logic (Implement Managers, singleton setup, logic controllers)
    ↓
-3. UI Layer (main .dic FIRST, VN.dic AFTER)
-   ↓
-4. Compilation check
+3. Gameplay/UI (Implement components attached to Prefabs, hook up UI)
 ```
 
-### 3.3 Critical Reminders:
-- **DIC files**: Tabs (not spaces), `?` placeholders for SQL
-- **VN.dic**: MUST update when adding new fields
-- **Java**: NO comments, try-with-resources for Connection
-- **SQL**: MERGE for upserts, NVL() for NULL handling
+### 3.3 Critical Unity C# Reminders:
+- **Encapsulation**: Use `[SerializeField] private` instead of `public` for Inspector variables.
+- **Performance**: DO NOT use `GameObject.Find`, `FindObjectOfType`, or `GetComponent` in `Update()`. Cache them in `Awake()` or `Start()`.
+- **Events**: Always unsubscribe from events/actions in `OnDisable()` or `OnDestroy()` to prevent memory leaks.
+- **Object Pooling**: Prefer Object Pooling over frequent `Instantiate`/`Destroy` during gameplay.
 
 ### 3.4 Checkpoint after each layer (MANDATORY):
 // turbo
 After completing each layer, **force-save `task.md`** before continuing:
 
 ```
-✅ DB done → save task.md (mark DB [x]) → continue Java
-✅ Java done → save task.md (mark Java [x]) → continue UI
+✅ Data done → save task.md (mark Data [x]) → continue Logic
+✅ Logic done → save task.md (mark Logic [x]) → continue UI
 ✅ UI done → save task.md (mark UI [x]) → continue Tests
 ```
 
@@ -81,23 +79,8 @@ After completing each layer, **force-save `task.md`** before continuing:
 > If interrupted mid-execution, the next `/execute` will read `task.md`,
 > see which layers are already `[x]` → skip them, only execute remaining `[ ]` layers.
 
-### 3.5 Error Handling Standard (Mandatory for Service layer)
-> **Reference**: `error-handling-patterns` skill
-
-When writing Service-layer code, apply:
-- [ ] **Try-catch granularity**: Catch specific exceptions, not generic `Exception`
-- [ ] **Retry on transient**: Ad network API calls → use retry with exponential backoff
-- [ ] **Circuit breaker**: If integration fails N times consecutively → skip and log, don't crash thread
-- [ ] **Error context**: Every catch block must log: operation name, input params, error message
-
 ## Step 4: Run Tests
-// turbo
-```bash
-cd source/ads-lib && ./gradlew compileJava
-```
-
-If tests fail:
-Refer to the Error Handling section below.
+Ask the user to enter Play Mode in the Unity Editor and verify the functionality, checking the Console for any errors or warnings.
 
 ## Step 5: Update task.md
 Update `task.md` in brain/:
@@ -112,16 +95,12 @@ Update `task.md` in brain/:
 ### Changes Made:
 | File | Action |
 |------|--------|
-| file1.java | MODIFY |
-| file2.dic | NEW |
-
-### Test Results:
-- Compile: ✅
-- Unit Tests: ✅ (X passed)
+| file1.cs | MODIFY |
+| file2.cs | NEW |
 
 ### Next Steps:
-1. Manual verification (if needed)
-2. Call `/finish` when verification is done
+1. Please test in Unity Play Mode.
+2. Call `/finish` when verification is done and no errors appear.
 ```
 
 ---
@@ -134,25 +113,3 @@ Update `task.md` in brain/:
 | `/execute task_name` | Execute specific task |
 | `/execute --step 1` | Execute only step 1 |
 | `/execute --dry-run` | Show what would be done without executing |
-
----
-
-## Error Handling
-
-| Error | Action |
-|-------|--------|
-| Task file not found | Ask user to create plan first |
-| Build failed | Show error, try 3 times, ask user |
-| DIC syntax error | Check tabs/spaces, verify tag closing |
-
----
-
-## Integration Points
-
-- **Before**: `/plan` creates the task file
-- **After**: `/finish` extracts learnings and archives
-- **Alternative**: `/debug` for quick fixes without full plan
-
----
-
-*Part of the Plan → Execute → Finish workflow.*

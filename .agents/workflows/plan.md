@@ -10,7 +10,7 @@ description: Create an implementation plan for a new feature
 ## Step 1: Understand the Feature Request
 Ask clarifying questions if needed:
 - What is the main objective?
-- Which module(s) are affected? (AdMob, Meta, TikTok, Adjust, UI/DIC, ClickHouse)
+- Which module(s) are affected? (Gameplay, UI, Audio, Data, Editor)
 - Any reference files or existing patterns to follow?
 
 ## Step 2: Collect SMART POLE Context Atoms
@@ -23,8 +23,8 @@ Before research, scan for **SP-Flaws** (missing atoms):
 - [ ] **Outline (O)**: Scope (include/exclude)? Desired structure?
 
 ### 🟡 CONTEXTUALIZER (Auto-fill from codebase research)
-- [ ] **Locale (L)**: Which platform? Which tech stack?
-- [ ] **Resource (R)**: Tools available? Constraints?
+- [ ] **Locale (L)**: Which platform? Which tech stack? (Unity Version?)
+- [ ] **Resource (R)**: Tools available? Constraints? (3D/2D, Plugins?)
 - [ ] **Mastery (M)**: Does user need detailed or high-level explanation?
 
 ### 🟢 ACCELERATOR (Optional - enhance quality)
@@ -42,7 +42,7 @@ Before research, scan for **SP-Flaws** (missing atoms):
 
 Checklist - skip to Step 4 if ALL are "No":
 - [ ] Is the scope ambiguous? (user said "make X better" without specifics)
-- [ ] Are there 2+ valid approaches? (new table vs. alter existing)
+- [ ] Are there 2+ valid approaches? (e.g. ScriptableObjects vs JSON saving)
 - [ ] Is this a new capability with no existing pattern?
 
 If ANY is "Yes" → activate `brainstorming` skill → get validated design → THEN continue to Step 4.
@@ -50,19 +50,17 @@ If ANY is "Yes" → activate `brainstorming` skill → get validated design → 
 ## Step 4: Research Codebase
 // turbo
 Read relevant context files (SSOT):
-- DIC syntax: `docs/reference/dic-master.md`
-- Project overview: `docs/reference/project-overview.md`
-- ClickHouse: `docs/reference/clickhouse-optimization/SKILL.md`
-- Frontend/UI: `docs/reference/frontend-design/SKILL.md`
+- Game Design Doc: `Docs/GDD.md` (if exists)
+- Project Architecture: `Docs/Architecture.md` (if exists)
 - Stack-specific: `docs/learned/` (relevant file)
 
 Search codebase for similar implementations:
 
 | Type | Location |
 |------|----------|
-| Java | `source/ads-lib/src/com/ogs/ads/` |
-| Reports | `source/ads-lib/run/web/com/ogs/ads/report/` |
-| CRUD | `source/ads-lib/run/web/com/ogs/ads/system/` |
+| Logic | `Assets/Scripts/Managers/` |
+| UI | `Assets/Scripts/UI/` |
+| Data | `Assets/Scripts/Data/` |
 
 ## Step 5: Create Task & Plan Artifacts
 
@@ -76,10 +74,10 @@ Create 2 artifacts (auto-saved to `brain/<conversation-id>/`):
 ## Checklist (Remove inapplicable items)
 - [ ] Research codebase
 - [ ] Plan approved
-- [ ] Database changes
-- [ ] Java layer changes
-- [ ] UI layer changes (.dic)
-- [ ] Tests passed
+- [ ] Data Layer (ScriptableObjects/JSON)
+- [ ] Core Logic Layer
+- [ ] UI/Gameplay Layer
+- [ ] Tests passed in Editor
 - [ ] Learnings extracted
 ```
 
@@ -95,33 +93,26 @@ Brief description of the feature and its objective.
 
 ## Proposed Changes
 
-### Database Schema
-#### [NEW/MODIFY] table_name
+### Data Layer
+#### [NEW/MODIFY] ScriptableObject / Model class
 - Description
 
-### Java Layer
-#### [MODIFY] ClassName.java
+### Core Logic Layer
+#### [MODIFY] Manager / Controller
 - Description
 
-### UI Layer
-#### [MODIFY] module/file.dic
+### Gameplay/UI Layer
+#### [MODIFY] View / MonoBehaviour
 - Description
-
-### API Integration (if applicable)
-> **Reference**: `api-patterns` skill — read before designing any new API integration.
-> Decision checklist:
-> - [ ] Consistent response format with existing integrations?
-> - [ ] Rate limiting strategy defined?
-> - [ ] Error response format standardized?
-> - [ ] Pagination approach matches existing pattern?
 
 ## Verification Plan
 ### Automated Tests
-- `cd source/ads-lib && ./gradlew compileJava`
+- Unity Test Runner (if applicable)
 
 ### Manual Verification
-- Step 1: ...
-- Step 2: ...
+- Step 1: Enter Play Mode...
+- Step 2: Click on X...
+- Step 3: Verify Y in Console...
 ```
 
 ## Step 6: Self-Review Plan ⚠️ NEVER TRUST YOUR FIRST PLAN!
@@ -130,33 +121,15 @@ Before presenting to user, MUST verify:
 ### Checklist:
 - [ ] **Completeness**: Have I covered all affected files?
 - [ ] **Consistency**: Do patterns match existing codebase conventions?
-- [ ] **Dependencies**: Did I miss any dependencies or imports?
-- [ ] **Edge Cases**: What could go wrong? How to handle errors?
+- [ ] **Performance**: Will this cause memory leaks? (Check `Update` loops)
+- [ ] **Edge Cases**: What if components are missing? How to handle nulls?
 - [ ] **Existing Code**: Did I check for similar existing implementations to reuse?
-- [ ] **DB Updates**: Are MERGE statements used for upserts? Unique indexes defined?
-- [ ] **Status Flow**: Does it follow PENDING → PROCESSING → SUCCESS/FAILED pattern?
-
-### System Impact Analysis:
-- [ ] Shared utilities — other modules using this function/class?
-- [ ] Database schema — affects views, stored procedures?
-- [ ] API contracts — JSP endpoint changed → which frontend consumes it?
-- [ ] Shared includes — `common.jsp`, `model_common.jsp` → other reports affected?
-
-### Reusable Code Check:
-```bash
-grep -rn "similar_pattern" source/ads-lib/src/ source/ads-lib/run/web/
-```
-- [ ] Any existing utility/common method/JS function to reuse instead of writing new?
-
-### State Machine Verification:
-If the feature has state transitions (thread processing, UI flows, API pipelines), **create a Mermaid state diagram** in the task file.
-Forces mapping all flows → catches logic gaps before coding.
 
 ### Final Check:
 1. Re-read plan as if you're a skeptical reviewer
 2. Search for at least ONE more related file you might have missed
 3. Double-check all file paths exist
-4. Verify SQL follows Oracle conventions (if applicable)
+4. Verify Unity C# conventions (No `public` fields for Inspector, use `[SerializeField]`)
 
 > [!CAUTION]
 > If plan feels "too simple", you probably missed something. Dig deeper!

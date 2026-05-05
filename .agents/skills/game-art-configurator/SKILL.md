@@ -34,3 +34,4 @@ This skill acts as an Active Knowledge Management Agent for the Master Configura
 - Present the updated section explicitly to the user.
 - Ask them if they want to revise the rule based on the Conflict warnings (if any).
 - If no conflicts, remind the user that the global RAG context is now updated for the `game-art-orchestrator`.
+- **Integration:** Run the `/finish` workflow immediately after to record any structural rule conflicts found into the `docs/learned/` knowledge base.
