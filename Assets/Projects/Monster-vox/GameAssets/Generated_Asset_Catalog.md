@@ -25,3 +25,9 @@
 | UI | UI_Icon_Collection | Cozy | e:\_Project_2026\UnityMCP\Unity-MCP\Assets\Projects\Monster-vox\GameAssets\Cozy\UI\UI_Icon_Collection_2026-05-04.png | A spooky magic grimoire icon. |
 | UI | UI_Icon_Ad | Cozy | e:\_Project_2026\UnityMCP\Unity-MCP\Assets\Projects\Monster-vox\GameAssets\Cozy\UI\UI_Icon_Ad_2026-05-04.png | A spooky old TV icon for ads. |
 | UI | UI_HUD_Pill | Cozy | e:\_Project_2026\UnityMCP\Unity-MCP\Assets\Projects\Monster-vox\GameAssets\Cozy\UI\UI_HUD_Pill_2026-05-04.png | A pill-shaped UI background for HUD. |
+| UI | UI_Icon_Arrow_Right | Cozy | e:\_Project_2026\UnityMCP\Unity-MCP\Assets\Projects\Monster-vox\GameAssets\Cozy\UI\UI_Icon_Arrow_Right_2026-05-05.png | A spooky right-pointing arrow icon. |
+| UI | UI_Icon_Refresh | Cozy | e:\_Project_2026\UnityMCP\Unity-MCP\Assets\Projects\Monster-vox\GameAssets\Cozy\UI\UI_Icon_Refresh_2026-05-05.png | A spooky circular arrow / refresh icon for 'Try Again'. |
+| UI | UI_Icon_Play | Cozy | e:\_Project_2026\UnityMCP\Unity-MCP\Assets\Projects\Monster-vox\GameAssets\Cozy\UI\UI_Icon_Play_2026-05-05.png | A spooky play triangle icon. |
+| UI | UI_Icon_Check | Cozy | e:\_Project_2026\UnityMCP\Unity-MCP\Assets\Projects\Monster-vox\GameAssets\Cozy\UI\UI_Icon_Check_2026-05-05.png | A spooky checkmark icon for 'Confirm'. |
+| UI | UI_Slot_Base | Cozy | e:\_Project_2026\UnityMCP\Unity-MCP\Assets\Projects\Monster-vox\GameAssets\Cozy\UI\UI_Slot_Base_2026-05-05.png | A spooky empty square slot frame to hold monsters. |
+| UI | UI_MainMenu_BG | Cozy | e:\_Project_2026\UnityMCP\Unity-MCP\Assets\Projects\Monster-vox\GameAssets\Cozy\UI\UI_MainMenu_BG_2026-05-05.png | A clean, minimalistic background for the main menu, with very few details. |

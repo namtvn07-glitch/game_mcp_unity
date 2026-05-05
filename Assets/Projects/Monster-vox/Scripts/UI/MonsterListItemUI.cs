@@ -12,7 +12,6 @@ namespace MonsterVox.UI
     {
         [Header("UI Elements")]
         [SerializeField] private Image monsterImage;
-        [SerializeField] private TextMeshProUGUI nameText;
         [SerializeField] private GameObject lockOverlay;
         [SerializeField] private Button unlockCoinBtn;
         [SerializeField] private TextMeshProUGUI unlockCoinText;
@@ -30,7 +29,7 @@ namespace MonsterVox.UI
             if (data == null) return;
 
             if (monsterImage != null) monsterImage.sprite = data.MonsterSprite;
-            if (nameText != null) nameText.text = data.MonsterName;
+            //if (nameText != null) nameText.text = data.MonsterName;
 
             if (unlockCoinText != null) unlockCoinText.text = data.UnlockCostCoins.ToString();
             if (unlockAdsText != null) unlockAdsText.text = data.UnlockCostAds.ToString();

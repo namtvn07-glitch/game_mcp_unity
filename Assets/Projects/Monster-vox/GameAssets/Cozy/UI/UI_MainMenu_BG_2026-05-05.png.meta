@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 3ad0d1f25eaf28f40a32dcc8c96f1b30
+guid: d054f569f19bcc749b721c6374321155
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 5720206376664618345
-    second: UI_Btn_Round_2026-05-04_0
+      213: -3011338239803344951
+    second: UI_MainMenu_BG_2026-05-05_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,13 +46,13 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
-  spriteMeshType: 0
+  spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
-  spriteBorder: {x: 24, y: 69, z: 24, w: 69}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
@@ -75,7 +75,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -126,23 +126,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: UI_Btn_Round_2026-05-04_0
+      name: UI_MainMenu_BG_2026-05-05_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 200
-        height: 198
+        width: 1080
+        height: 1920
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 965d4038461426f40800000000000000
-      internalID: 5720206376664618345
+      spriteID: 9c7b8fd53d39536d0800000000000000
+      internalID: -3011338239803344951
       vertices: []
       indices: 
       edges: []
@@ -151,8 +151,8 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
-    internalID: 1537655665
+    spriteID: 
+    internalID: 0
     vertices: []
     indices: 
     edges: []
@@ -161,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      UI_Btn_Round_2026-05-04_0: 5720206376664618345
+      UI_MainMenu_BG_2026-05-05_0: -3011338239803344951
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
