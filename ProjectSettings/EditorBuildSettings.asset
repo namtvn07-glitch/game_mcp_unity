@@ -6,8 +6,8 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Projects/Monster-vox/Scenes/demo.unity
-    guid: c0b55147a9a191b4b8145188f2f907c8
+    path: Assets/Projects/Monster-vox/Scenes/MonsterVox_Main.unity
+    guid: dd460f42cac2f0a4780b317d2cab8118
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 359424097c6557349b42900d18fcf6da, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
