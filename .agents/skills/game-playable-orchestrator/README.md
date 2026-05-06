@@ -1,48 +1,25 @@
-# Playable Studio 🎬 (Integration Wrapper)
+# game-playable-orchestrator
 
-**Playable Studio** là một hệ thống AI Orchestrator chuyên trách nhiệm vụ **Tái chế & Đóng gói Quảng cáo**. Thay vì tự huyễn hoặc code game từ đầu, skill này tiếp nhận một thư mục trò chơi số gốc ĐÃ HOÀN THIỆN, chắt lọc ra tinh túy của game, và tự động sản xuất ra một tệp Playable Ad định dạng `< 5MB`, Single-File HTML5 (Base64) sử dụng Engine Phaser 3.
+> **Mô tả:** AI Game Studio Orchestrator to generate HTML5 Playable Ads (Phaser 3) from scratch using an autonomous 5-phase pipeline.
 
----
+## 🎯 Mục đích sử dụng
+Đóng vai trò là **Executive Producer** (Giám đốc sản xuất) cho Playable Game Studio. Skill này chịu trách nhiệm biến một dự án game hoàn chỉnh (có GDD, Assets, Audio) thành một bản HTML5 Playable Ad tối ưu hóa cao bằng Phaser 3 (chỉ có MỘT file duy nhất, dung lượng < 5MB, sử dụng Base64 media).
 
-## Tính năng Cốt lõi (Core Features)
+## ⚙️ Kích hoạt
+Sử dụng lệnh `@[/game-playable-orchestrator] <Idea>` để tạo project mới. Sử dụng lệnh "Tiếp tục" hoặc "Continue" để chạy phase tiếp theo.
 
-1. **Auto-Ingestion & GDD Distillation:** Đọc GDD và Assets List của Game Gốc. Tự động bóc tách và viết lại một bản `Playable_GDD.md` siêu tinh gọn (Tập trung riêng vào khoảnh khắc vàng 15-20s "Hook").
-2. **Chốt chặn Ngân sách Dung lượng (Budget Sentinel):** Ép khắt khe giới hạn nguyên liệu đầu vào: Tối đa 1 BGM, 3 SFX và 15 ảnh Sprites để đảm bảo bọc quảng cáo không bao giờ phình to quá mức giới hạn `< 5MB`.
-3. **Ủy quyền Sinh Assets Thiếu (Delegated Ordering):** Nếu Playable Ad cần các nút bấm (UI Button, Hand Pointer) mà game gốc không có, hệ thống không báo lỗi. Nó sẽ xuất hóa đơn `Missing_Ad_Assets.json` để bạn gọi skill `game-art-orchestrator` tự vẽ bù.
-4. **Boilerplate An Lành (Data-Driven Templates):** Cung cấp sẵn tệp lõi `phaser_base.html`. AI không bao giờ phải hì hục nhớ cách setup framework, loại bỏ 99% rủi ro sinh Code lỗi (Boilerplate Hallucination).
-5. **Headless Auto QA:** Tích hợp gọi ngầm `browser_subagent` kích hoạt Node localhost chạy thử 5 giây tự bắt lỗi JavaScript Console ngay trong lúc dev.
+## 📥 Đầu vào (Input)
+- Yêu cầu ban đầu (New Request) hoặc lệnh "Tiếp tục".
+- Trạng thái hiện tại của project được lưu tại `<workspace>/Assets/PlayableGameStudio/Projects/<Project_Name>/.studio_state`.
+- Các file hướng dẫn (`phase1_ingest.md`, `phase2_harvest.md`, `phase3_dev.md`, `phase4_package.md`).
 
----
+## 📤 Đầu ra (Output)
+Một file monolithic HTML duy nhất chứa toàn bộ game logic (viết bằng Phaser 3) và assets (Base64), sẵn sàng để dùng làm Playable Ad.
 
-## Cấu trúc Pipeline (4 Phases)
-
-Tiến trình được chia làm 4 Phase tuân thủ cấu trúc State-Machine cứng:
-
-*   **Phase 1 - INGEST:** AI quét đọc thư mục Game Gốc, phân loại thể loại game (Genre), vẽ ra dòng sự kiện Gameplay Loop, giới hạn chơi, nút thắt Kết Thúc (End Conditions) và bố cục UI Flow hoàn chỉnh. Trả ra `Playable_GDD.md`.
-*   **Phase 2 - HARVEST:** Trích xuất nguyên liệu từ Game gốc gộp về thư mục của Ad. Các tệp Ảnh và Âm Thanh sẽ đi qua script tối ưu hóa độ nén xuống `.webp`/`.ogg`. Những tài nguyên phát sinh (chuyên cho Web) được gom vào `Missing_Ad_Assets.json` chờ xử lý nghệ thuật.
-*   **Phase 3 - DEV:** Viết khối lượng logic HTML/JS chuyên biệt `.js` theo chuẩn Phaser 3, ánh xạ danh mục các Base64 thông qua `assets_manifest.json`. Máy tự động QA bằng Browser Subagent.
-*   **Phase 4 - PACKAGE:** Kích hoạt Python script nhồi toàn khối JavaScript, Sprite Data-URIs và SFX Data-URIs xuyên thẳng vào Template, sinh ra lò file `build/index.html` duy nhất.
-
----
-
-## Ví dụ Sử dụng (Usage Workflow)
-
-Giả sử bạn đã làm xong một dự án lớn tên là **FlappyTrippy** (có đầy đủ GDD, Hình Ảnh và Âm Thanh gốc).
-
-**Bước 1: Khởi động hệ thống (Kích hoạt Phase 1)**
-```text
-@[/game-playable-orchestrator] Hãy khởi tạo chiến dịch quảng cáo cho dự án e:\_Project_2026\Assets\Projects\FlappyTrippy\
-```
-*(AI sẽ đọc GDD gốc, viết lại Playable_GDD.md và hiển thị chờ bạn Appove).*
-
-**Bước 2: Ra lệnh nhảy vọt (Tiếp diễn)**
-```text
-Tiếp tục
-```
-*(AI chuyển qua Phase 2: Copy ảnh về kho. Báo cáo dung lượng. Bạn có thể thấy file `Missing_Ad_Assets.json` bật ra, hãy gọi lệnh "@[/game-art-orchestrator] làm cho tao đống đồ này" và nhét nó vào kho).*
-
-**Bước 3 & Bước 4: DEV và Build Thành Phẩm**
-```text
-Tiếp tục
-```
-*(Hệ thống sẽ chạy nốt Phase 3 Code Logic và tiếp tục tự chạy Phase 4 đóng gói hoàn tất. Bạn chỉ cần mở thư mục `build/index.html` lên để chiêm ngưỡng sản phẩm).*
+## ⚠️ Lưu ý quan trọng
+- **Quy định Kiến trúc (Architectural Rules):**
+  1. Không tự bịa ra ngữ cảnh. Bắt buộc đọc `GDD.md`, `task_input.json` và tracker flag.
+  2. **Phase-Gated Execution:** BẮT BUỘC dừng và hỏi ý kiến người dùng sau mỗi Phase. Không được tự ý nhảy sang phase tiếp theo nếu chưa có lệnh "Continue".
+  3. Cấm hard-code file HTML từ đầu. Chỉ viết logic loop vào `logic_hook.js`, hệ thống sẽ tự bơm (inject) vào `phaser_base.html` ở Phase 4.
+- Kích hoạt workflow `/debug` nếu gặp lỗi HTML5/Phaser ở Phase 3.
+- Kết thúc ở Phase 4 bằng workflow `/finish` và `/commit`.
